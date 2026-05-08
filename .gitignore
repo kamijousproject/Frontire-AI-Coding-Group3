@@ -1,0 +1,13 @@
+# TeamBoard greenfield MCP demo
+teamboard_greenfield-1-mcp-demo/
+
+# macOS
+.DS_Store
+
+# Editor-specific
+.cursor/
+.idea/
+.vscode/
+
+# Logs
+*.log
