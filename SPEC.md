@@ -52,11 +52,12 @@ Features required for the project to be considered complete.
 
 - **Multi-city display** — up to **10 cities** simultaneously; minimum 1; no duplicate cities (case-insensitive match); adding duplicate shows inline error below search input: "City already added" — disappears after **3 seconds** or on next keypress
 - **Current weather** — per card: temperature as `18°C / 65°F` (both units simultaneous, no toggle), feels-like temp same format, humidity (%), wind speed (km/h), condition text + icon
-- **City search** — 300ms debounce, min 2 chars to trigger, max 5 results in **dropdown below input**; dropdown closes on outside click or Escape key; each result shows `City, Region, Country` for disambiguation
+- **City search** — 300ms debounce, min 2 chars to trigger, max 5 results in **dropdown below input**; dropdown closes on outside click or Escape key; each result shows `City, Region, Country` for disambiguation; when 10 cities already added, results still show but each result is disabled with tooltip "City list full (10/10)"
 - **City removal** — X button top-right of each card; removes immediately, no confirmation dialog; city removed from `localStorage`
 - **Responsive design** — mobile-first; all breakpoints functional; 1/2/3-col grid as specified above
-- **Empty states** — initial load: "Search for a city to get started"; search no results: "No cities found"; failed card load: per-card error message showing `ErrorResponse.error` text + retry button
-- **City persistence** — city list stored in `localStorage` key `weather_cities` as `string[]` of city names (lowercased, trimmed); restored on page reload; stale data stays until user removes city or page re-fetches
+- **Empty states** — initial load: "Search for a city to get started"; search no results: "No cities found"; failed card load: per-card error message showing `ErrorResponse.error` text + single retry button
+- **Failed card retry** — retry button calls `GET /api/v1/weather/current` for that city once immediately; if second attempt also fails, replace retry button with static message "Unable to load weather data" (no further retry)
+- **City persistence** — city list stored in `localStorage` key `weather_cities` as `string[]` of city names (lowercased, trimmed); restored on page reload; on parse error or invalid type, reset to `[]` silently; on restore, truncate to first 10 entries if >10 found; stale data stays until user removes city or re-adds
 
 ---
 
@@ -64,8 +65,8 @@ Features required for the project to be considered complete.
 
 Features that improve the experience but are not required.
 
-- **5-day forecast** — days 1–5 from today (not today); shows high/low temp °C / °F + condition icon per day
-- **Geolocation** — auto-detect on page load via browser Geolocation API; if denied or unavailable, show empty state silently (no error modal); resolved city name from weatherapi.com `location.name` used as display name
+- **5-day forecast** — expandable section at the bottom of each weather card; collapsed by default; tap/click to expand; shows days 1–5 from today (not today) as a horizontal row of day-tiles; each tile: abbreviated day name (Mon/Tue/…), condition icon (day variant always — forecast cards do not use `is_day`), high/low temp as `22°C / 72°F`; collapses on second tap
+- **Geolocation** — auto-detect on page load via browser Geolocation API; if denied or unavailable, show empty state silently (no error modal); resolved city name from weatherapi.com `location.name` stored in `localStorage` as lowercased trimmed string, same as search-added cities; if resolved name matches an existing city (case-insensitive), treat as duplicate and do not add
 
 ---
 
@@ -82,8 +83,9 @@ Features that improve the experience but are not required.
 
 ```typescript
 interface WeatherData {
-  city: string;           // "London" — from weatherapi.com location.name
-  country: string;        // "UK"
+  type: 'data';           // explicit discriminant for MultiWeatherResult
+  city: string;           // "London" — raw value from weatherapi.com location.name (e.g. "United Kingdom", not "UK")
+  country: string;        // "United Kingdom" — raw from weatherapi.com, not abbreviated
   region: string;         // "City of London, Greater London"
   temp_c: number;         // e.g. 18.5
   temp_f: number;         // e.g. 65.3
@@ -111,6 +113,7 @@ interface ForecastDay {
   condition: string;
   condition_code: number;
   icon_url: string;    // always https://
+  // No is_day field — forecast tiles always use day variant of condition background
 }
 ```
 
@@ -137,13 +140,14 @@ interface ErrorResponse {
 
 ```typescript
 interface WeatherError {
+  type: 'error';  // explicit discriminant — use this, not structural duck-typing
   city: string;
   error: string;
   code: number;
 }
 
 type MultiWeatherResult = WeatherData | WeatherError;
-// Discriminate via: 'condition_code' in item → WeatherData; else WeatherError
+// Discriminate via: item.type === 'data' → WeatherData; item.type === 'error' → WeatherError
 ```
 
 #### App Error Codes
@@ -162,8 +166,8 @@ type MultiWeatherResult = WeatherData | WeatherError;
 
 ### Constraints (all endpoints)
 
-- **Rate limiting**: 60 requests/minute per IP; use `X-Forwarded-For` header (Railway sits behind a proxy — raw socket IP is Railway's, not the user's); trust first value in `X-Forwarded-For`; in-memory counter acceptable for MVP single-instance Railway deployment (resets on restart — known limitation)
-- **Input validation**: `city` and `q` params — max 100 chars, pattern `^[a-zA-Z0-9 ,'\-\.]+$`; reject with 400 + code 1004 before forwarding upstream
+- **Rate limiting**: 60 requests/minute per IP; extract client IP from **last** value in `X-Forwarded-For` header (Railway appends real client IP to the end — first value is client-controlled and spoofable); in-memory counter acceptable for MVP single-instance Railway deployment (resets on restart — known limitation)
+- **Input validation**: `city` and `q` params — max 100 chars, pattern `^[a-zA-Z0-9 ,'\-\.]+$`; reject with 400 + code 1004 before forwarding upstream; for `cities` (comma-separated), each element after split+trim must also be 2–100 chars and match pattern — reject whole request with 400 + code 1004 if any element fails, including empty-string elements
 - **Timeout**: 5 seconds to weatherapi.com; respond 503 + code 1003 on timeout
 - **CORS**: same-origin only; no `Access-Control-Allow-Origin: *`
 - **API key**: `WEATHER_API_KEY` env var — server-side only, never `NEXT_PUBLIC_` prefix, never in any response body or header
@@ -197,14 +201,15 @@ Cache: server-side **10 minutes** per `city` key (lowercased, trimmed).
 
 | Param | Type | Required | Constraints |
 |---|---|---|---|
-| `cities` | comma-separated string | yes | 1–10 city names; each name trimmed after split; server deduplicates before fetching |
+| `cities` | comma-separated string | yes | 1–10 city names after split+trim; each element 2–100 chars; server deduplicates before fetching |
 
 | Status | Body |
 |---|---|
 | 200 | `MultiWeatherResult[]` — length equals deduplicated city count |
 | 400 | `ErrorResponse` code 1005 if >10 cities after dedup |
+| 400 | `ErrorResponse` code 1004 if any element fails validation (empty, too short, bad chars) |
 
-Partial success: all cities attempted; failed cities return `WeatherError` in array; 200 status regardless of partial failure.
+Partial success: all cities attempted; failed cities return `WeatherError` (with `type: 'error'`) in array; 200 status regardless of partial failure.
 
 ### `GET /api/v1/cities/search?q={keyword}`
 
@@ -248,8 +253,8 @@ Non-negotiable implementation requirements:
 1. `WEATHER_API_KEY` must be server-side only — **never** name it `NEXT_PUBLIC_WEATHER_API_KEY`
 2. API key must never appear in any client bundle, network response, or log
 3. All weatherapi.com HTTP calls made from API Routes only — never from browser
-4. Rate limiting (60 req/min/IP via `X-Forwarded-For`) must be applied to all `/api/v1/*` routes including `/health`
-5. Input validation must reject non-conforming params with 400 **before** forwarding to weatherapi.com
+4. Rate limiting (60 req/min/IP via **last** value in `X-Forwarded-For`) must be applied to all `/api/v1/*` routes including `/health`
+5. Input validation must reject non-conforming params with 400 **before** forwarding to weatherapi.com; includes per-element validation on comma-separated `cities` param
 6. All `icon_url` values must be normalized to `https://` before returning to client
 
 ---
@@ -258,15 +263,15 @@ Non-negotiable implementation requirements:
 
 | # | Requirement | Priority | Covered By |
 |---|---|---|---|
-| 1 | Multi-city display (max 10, no dupes) | Must-have | §5 `GET /api/v1/weather/multiple` |
+| 1 | Multi-city display (max 10, no dupes, full-list disabled state) | Must-have | §5 `GET /api/v1/weather/multiple` |
 | 2 | Current weather (exact fields, both units) | Must-have | §4 `WeatherData` / `GET /api/v1/weather/current` |
 | 3 | City search (dropdown, debounce 300ms, min 2, max 5) | Must-have | §5 `GET /api/v1/cities/search` |
 | 4 | City removal (X button) | Must-have | §1 Must-have |
 | 5 | Responsive design (1/2/3-col grid) | Must-have | §1 Frontend Style / TailwindCSS |
-| 6 | Empty + error states (3 variants) | Must-have | §1 Must-have / §4 `ErrorResponse` |
-| 7 | City persistence (`localStorage` as `string[]`) | Must-have | §1 Must-have |
-| 8 | 5-day forecast | Nice-to-have | §5 `GET /api/v1/weather/forecast` |
-| 9 | Geolocation (graceful fallback) | Nice-to-have | §5 `GET /api/v1/weather/location` |
+| 6 | Empty + error states + retry (one attempt) | Must-have | §1 Must-have / §4 `ErrorResponse` |
+| 7 | City persistence (`localStorage` as `string[]`, parse recovery, 10-cap) | Must-have | §1 Must-have |
+| 8 | 5-day forecast (expandable card section, day variant) | Nice-to-have | §5 `GET /api/v1/weather/forecast` |
+| 9 | Geolocation (graceful fallback, dedup vs existing cities) | Nice-to-have | §5 `GET /api/v1/weather/location` |
 | 10 | weatherapi.com integration (10m cache, no mid-session refresh) | Challenge | §3 / §5 cache spec |
 | 11 | JSON data processing (schema transform + icon normalization) | Challenge | §4 `WeatherData` / `ForecastDay` |
 
@@ -307,3 +312,14 @@ Must include requirements 1–7, 10, 11.
 - Temperature unit toggle (both units shown simultaneously)
 - Auto-refresh of weather data mid-session
 - Multi-instance rate limiting (Upstash Redis)
+- Wind direction (only wind speed in km/h is shown)
+- UV index, visibility, pressure, or any weather field not listed in `WeatherData` §4
+- Weather animations or animated backgrounds
+
+---
+
+## 10. UI Design Reference
+
+The HTML mockup at `ui-design-guide/WeatherApp_standalone_.html` is a **visual reference only**.
+
+**Precedence rule**: spec text (this document) is authoritative for feature scope, data fields, and behavior. If the HTML design shows a field, feature, or interaction not specified in §1–§8, it is out of scope for v1.0 and must not be built without an explicit spec update.
