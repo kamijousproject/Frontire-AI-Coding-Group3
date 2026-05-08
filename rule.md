@@ -31,9 +31,27 @@ Develop a modern Weather Dashboard Web Application that:
 - Framer Motion
 - Recharts
 
-## Backend (Optional)
+## Backend (Should Have — Required for API key proxy)
 - Node.js
 - Express.js
+
+---
+
+# 2.1 Environment Variables
+
+- All API keys must be stored in `.env` file
+- Never hardcode API keys in source files
+- `.env` must be listed in `.gitignore`
+- Provide `.env.example` with placeholder values for all required variables
+
+### Required Variables
+
+```env
+WEATHER_API_KEY=your_api_key_here
+WEATHER_API_BASE_URL=https://api.weatherapi.com/v1
+PORT=3001
+FRONTEND_URL=http://localhost:5173
+```
 
 ---
 

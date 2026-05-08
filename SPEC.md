@@ -78,7 +78,9 @@ PUT `/api/v1/settings`
 
 ---
 
-### Optional Auth
+### Auth (Won't Have — Out of scope for v1.0)
+
+> These endpoints are **NOT required** for the MVP. Per MoSCoW section 6.5, a full user account system is excluded from the first release. Listed here for future reference only.
 
 POST `/api/v1/auth/register`
 - Body: `{email, password, name?}`

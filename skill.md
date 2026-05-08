@@ -1,9 +1,3 @@
-
----
-
-## `skill.md`
-
-```md
 # AI Skills & Engineering Skills
 Project: Weather Dashboard
 
@@ -32,3 +26,74 @@ Developers should be able to write prompts like:
 Create a reusable React weather card component using TailwindCSS.
 Support loading state and responsive layout.
 Use TypeScript.
+```
+
+## Good Prompt Principles
+- Be specific about the technology (React, TailwindCSS, TypeScript)
+- Describe the input props and expected output
+- Mention edge cases (loading, error, empty state)
+- Ask for one component at a time
+
+---
+
+# 3. Frontend Engineering Skills
+
+## React
+- Functional components with hooks
+- Custom hooks for API calls (`useWeather`, `useFavorites`)
+- Component composition and reuse
+- State management with useState / useReducer
+
+## TypeScript
+- Define interfaces for API responses
+- Type props and return values
+- Avoid using `any`
+
+## TailwindCSS
+- Responsive utilities (`sm:`, `md:`, `lg:`)
+- Conditional classes with `clsx` or `cn`
+- Dark mode support (`dark:`)
+
+## Axios
+- Create axios instance with base URL
+- Handle request/response interceptors
+- Handle errors from backend API
+
+---
+
+# 4. Backend Engineering Skills
+
+## Node.js + Express
+- Create REST API routes
+- Use middleware for error handling
+- Handle async errors with try/catch or wrapper
+- Set up CORS for frontend access
+
+## Environment Variables
+- Load `.env` with `dotenv`
+- Never expose API keys to client
+- Use `.env.example` as reference template
+
+## External API Integration
+- Call WeatherAPI.com from backend only
+- Map external response to internal format
+- Handle 4xx/5xx from external API
+
+---
+
+# 5. General Skills
+
+## Git
+- Commit with clear messages
+- Use feature branches
+- Do not commit `.env`
+
+## Code Quality
+- Write small, focused functions
+- Avoid deep nesting
+- Prefer named exports
+
+## Debugging
+- Use browser DevTools for frontend
+- Use console.log or a logger for backend
+- Inspect network requests in browser
