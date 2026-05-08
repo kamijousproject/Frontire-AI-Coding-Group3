@@ -40,7 +40,8 @@ Use TypeScript.
 
 ## React
 - Functional components with hooks
-- Custom hooks for API calls (`useWeather`, `useFavorites`)
+- Custom hooks for API calls (`useWeather`, `useGeolocation`)
+- Custom hooks for future features (`useFavorites` — Should Have v1.1+)
 - Component composition and reuse
 - State management with useState / useReducer
 
@@ -50,9 +51,9 @@ Use TypeScript.
 - Avoid using `any`
 
 ## TailwindCSS
-- Responsive utilities (`sm:`, `md:`, `lg:`)
+- Responsive utilities (`sm:`, `md:`, `lg:`) — required for MVP
 - Conditional classes with `clsx` or `cn`
-- Dark mode support (`dark:`)
+- Dark mode support (`dark:`) — Could Have, implement after MVP
 
 ## Axios
 - Create axios instance with base URL
@@ -75,9 +76,10 @@ Use TypeScript.
 - Use `.env.example` as reference template
 
 ## External API Integration
-- Call WeatherAPI.com from backend only
+- Call WeatherAPI.com from backend only (never from frontend)
 - Map external response to internal format
 - Handle 4xx/5xx from external API
+- WeatherAPI.com free tier limit: 1,000 calls/day — use caching to preserve quota
 
 ---
 

@@ -84,15 +84,30 @@ FRONTEND_URL=http://localhost:5173
 
 ```txt
 src/
-├── api/
-├── assets/
-├── components/
-├── hooks/
-├── layouts/
-├── pages/
-├── services/
-├── store/
-├── styles/
-├── types/
-├── utils/
+├── api/          # axios instance + API call functions
+├── assets/       # images, icons
+├── components/   # reusable UI components (WeatherCard, SearchBar, etc.)
+├── hooks/        # custom hooks (useWeather, useGeolocation)
+├── layouts/      # page layout wrappers
+├── pages/        # route-level components
+├── services/     # business logic, data transform
+├── store/        # (optional) Zustand or Redux — only if needed
+├── styles/       # global CSS
+├── types/        # TypeScript interfaces and types
+├── utils/        # helper functions
 └── main.tsx
+```
+
+---
+
+# 5. Project C — MVP Checklist
+
+Before submitting, verify:
+
+- [ ] City search works with keyword input
+- [ ] Current weather displays for selected city
+- [ ] Multiple cities can be shown simultaneously
+- [ ] weatherapi.com API key is stored in `.env` only
+- [ ] Frontend does NOT call weatherapi.com directly
+- [ ] Loading and error states are handled
+- [ ] UI is responsive on mobile and desktop

@@ -1,155 +1,111 @@
-# Weather Dashboard API Endpoints
+# Project C: Weather Dashboard — Requirements
 
-Base URL: `/api/v1`
-
----
-
-### problem
-The goal of this project is to develop a web application that allows users to search and view weather information for multiple cities, including current weather, forecast data, and location-based weather.
-
-### Health
-
-GET `/api/v1/health`
-- Success: `200 + {status, time}`
+Source: AI-Accelerated Software Development Workshop (slide 45/68)
 
 ---
 
-### Weather
+## Project Description
 
-GET `/api/v1/weather/current`
-- Query: `{city}`
-- Success: `200 + {city, country, temperature_c, humidity, wind_kph, condition, icon, updated_at}`
+**Project C: Weather Dashboard** is a web application that allows users to search and view real-time weather information for multiple cities simultaneously.
 
-GET `/api/v1/weather/multiple`
-- Query: `{cities}`
-- Example: `?cities=Bangkok,Tokyo,London`
-- Success: `200 + [{city, country, temperature_c, humidity, wind_kph, condition, icon, updated_at}]`
+The application fetches live data from **weatherapi.com** (free tier: 1,000 calls/day) and displays it through a clean, responsive UI. Users can search for any city by name, view current conditions such as temperature, humidity, and wind speed, and optionally check a 5-day forecast or detect their location automatically via geolocation.
 
-GET `/api/v1/weather/forecast`
-- Query: `{city, days?}`
-- Example: `?city=Bangkok&days=5`
-- Success: `200 + {city, country, forecast: [{date, max_temp_c, min_temp_c, avg_temp_c, condition, icon, chance_of_rain}]}`
+### Key Goals
 
-GET `/api/v1/weather/location`
-- Query: `{lat, lon}`
-- Success: `200 + {city, country, latitude, longitude, temperature_c, humidity, wind_kph, condition, icon, updated_at}`
+- Display current weather for multiple cities at once
+- Provide a fast and intuitive city search experience
+- Handle external API data (JSON) and render it cleanly on the UI
+- Call external API (weatherapi.com) through backend proxy (api route)
 
-GET `/api/v1/weather/alerts`
-- Query: `{city}`
-- Success: `200 + [{title, severity, description, effective_at, expires_at}]`
+### Tech Stack
 
----
+- **Frontend**: Next.js, TypeScript, TailwindCSS
+- **Backend**: Next.js API Routes (built-in) — acts as API proxy
+- **External API**: weatherapi.com
+- **Deployment**: Railway
 
-### Cities
+### Frontend Style
 
-GET `/api/v1/cities/search`
-- Query: `{q}`
-- Success: `200 + [{name, region, country, lat, lon}]`
+- **TailwindCSS** for all styling
+- **Mobile-first responsive design** — layout adapts to mobile, tablet, and desktop
+- Breakpoints: `sm` (640px), `md` (768px), `lg` (1024px)
+- Weather cards stack vertically on mobile, grid layout on desktop
+- Search bar and inputs optimized for touch on mobile
+- Background changes based on weather condition (sunny, rainy, cloudy, etc.)
 
 ---
 
-### Favorites
+## 1. Must-have
 
-GET `/api/v1/favorites`
-- Header: `Authorization: Bearer <token>` optional for future user account support
-- Success: `200 + [{id, city, country, created_at}]`
+Features required for the project to be considered complete.
 
-POST `/api/v1/favorites`
-- Header: `Authorization: Bearer <token>` optional for future user account support
-- Body: `{city, country?}`
-- Success: `201 + {favorite}`
-
-DELETE `/api/v1/favorites/:city`
-- Header: `Authorization: Bearer <token>` optional for future user account support
-- Success: `200 + {message}`
+- **Multi-city display** — แสดงสภาพอากาศได้หลายเมืองพร้อมกัน
+- **Current weather** — แสดงสภาพอากาศปัจจุบันของเมืองที่เลือก
+- **City search** — ระบบค้นหาเมืองด้วย keyword
 
 ---
 
-### Settings
+## 2. Nice-to-have
 
-GET `/api/v1/settings`
-- Header: `Authorization: Bearer <token>` optional for future user account support
-- Success: `200 + {unit, language, theme, default_city}`
+Features that improve the experience but are not required.
 
-PUT `/api/v1/settings`
-- Header: `Authorization: Bearer <token>` optional for future user account support
-- Body: `{unit?, language?, theme?, default_city?}`
-- Success: `200 + {settings}`
+- **5-day forecast** — พยากรณ์อากาศล่วงหน้า 5 วัน
+- **Responsive design** — รองรับทุกขนาดหน้าจอ (mobile, tablet, desktop)
+- **Geolocation** — ระบุพิกัดอัตโนมัติเพื่อแสดงสภาพอากาศตามตำแหน่งผู้ใช้
 
 ---
 
-### Auth (Won't Have — Out of scope for v1.0)
+## 3. Technical Challenge
 
-> These endpoints are **NOT required** for the MVP. Per MoSCoW section 6.5, a full user account system is excluded from the first release. Listed here for future reference only.
-
-POST `/api/v1/auth/register`
-- Body: `{email, password, name?}`
-- Success: `201 + {user, token}`
-
-POST `/api/v1/auth/login`
-- Body: `{email, password}`
-- Success: `200 + {user, token}`
-
-POST `/api/v1/auth/logout`
-- Header: `Authorization: Bearer <token>`
-- Success: `200 + {message}`
-
-GET `/api/v1/auth/me`
-- Header: `Authorization: Bearer <token>`
-- Success: `200 + {user}`
+- **External API integration** — เชื่อมต่อ weatherapi.com (free tier: 1,000 calls/day)
+- **JSON data processing** — จัดการและแปลง JSON response มาแสดงผลบน UI
 
 ---
 
-### AI Weather Summary - Future Feature
+## 4. Requirement Coverage
 
-POST `/api/v1/weather/ai-summary`
-- Body: `{city, days?}`
-- Success: `200 + {city, summary, recommendation}`
-
----
-
-### Error Format
-
-All error responses should follow this format:
-
-```json
-{
-  "ok": false,
-  "error": {
-    "code": "CITY_NOT_FOUND",
-    "message": "City not found"
-  }
-}
-```
+| # | Requirement                | Priority     | Covered By                                                    |
+| - | -------------------------- | ------------ | ------------------------------------------------------------- |
+| 1 | Multi-city display         | Must-have    | moscow.md 3.3 / SPEC `GET /api/v1/weather/multiple`         |
+| 2 | Current weather            | Must-have    | moscow.md 3.1 / SPEC `GET /api/v1/weather/current`          |
+| 3 | City search                | Must-have    | moscow.md 3.2 / SPEC `GET /api/v1/cities/search`            |
+| 4 | 5-day forecast             | Nice-to-have | moscow.md 4.1 / SPEC `GET /api/v1/weather/forecast`         |
+| 5 | Responsive design          | Nice-to-have | TailwindCSS mobile-first /`sm:` `md:` `lg:` breakpoints |
+| 6 | Geolocation                | Nice-to-have | moscow.md 4.2 / SPEC `GET /api/v1/weather/location`         |
+| 7 | weatherapi.com integration | Challenge    | moscow.md 3.4 / rule.md / SPEC notes                          |
+| 8 | JSON data processing       | Challenge    | moscow.md 3.5 / datamodel.md weather_cache                    |
 
 ---
 
-### Common Error Codes
+## 5. MVP Scope
 
-`400 INVALID_QUERY`
-- Request query or body is invalid
+The minimum viable product must include requirements 1, 2, 3, 7, and 8.
 
-`401 UNAUTHORIZED`
-- Missing or invalid token
+### MVP API Endpoints
 
-`404 CITY_NOT_FOUND`
-- City does not exist or external API returned no result
+| Method | Path                         | Description                 |
+| ------ | ---------------------------- | --------------------------- |
+| GET    | `/api/v1/health`           | Health check                |
+| GET    | `/api/v1/weather/current`  | Current weather by city     |
+| GET    | `/api/v1/weather/multiple` | Weather for multiple cities |
+| GET    | `/api/v1/cities/search`    | Search cities by keyword    |
 
-`429 RATE_LIMITED`
-- Too many requests
+### Deployment (Railway)
 
-`502 WEATHER_API_ERROR`
-- External weather API failed
-
-`500 INTERNAL_SERVER_ERROR`
-- Unexpected server error
+| Service     | Railway Config                                          |
+| ----------- | ------------------------------------------------------- |
+| Next.js app | Web Service — `npm run build && npm start`              |
+| Environment | `WEATHER_API_KEY` set in Railway environment variables  |
 
 ---
 
-### Recommended Notes
+## 6. Out of Scope (v1.0)
 
-- Current weather should be cached for 5 minutes.
-- Forecast should be cached for 30 minutes.
-- Search input should be debounced on frontend.
-- API keys must be stored in `.env`.
-- Do not expose the external WeatherAPI key to the browser when using a backend proxy.
+Per moscow.md section 6 (Won't Have):
+
+- User account system (login, register, password)
+- Historical weather analytics
+- Weather map layer
+- Social sharing
+- Multi-provider weather comparison
+- Paid subscription

@@ -1,6 +1,10 @@
-# Frontire-AI-Coding
+# Project C: Weather Dashboard
 
-Weather Dashboard Web Application — Search and view weather for multiple cities, including current weather, 5-day forecast, and location-based weather.
+**AI-Accelerated Software Development Workshop**
+
+A web application that allows users to search and view real-time weather information for multiple cities. Data is fetched from **weatherapi.com** (free tier: 1,000 calls/day) and displayed through a clean, responsive UI.
+
+> Part of the Frontire AI Coding project (`Frontire-AI-Coding`)
 
 ---
 
@@ -110,16 +114,16 @@ See [`SPEC.md`](./SPEC.md) for full endpoint documentation.
 
 ---
 
-## MoSCoW Priority
+## Project C Requirements
 
-See [`moscow.md`](./moscow.md) for full feature prioritization.
+See [`SPEC.md`](./SPEC.md) for full requirements and [`moscow.md`](./moscow.md) for feature prioritization.
 
-| Priority | Features |
-|----------|----------|
-| Must Have (v1.0) | Current weather, city search, multi-city, responsive UI |
-| Should Have (v1.1+) | Forecast, geolocation, favorites, API caching |
-| Could Have (v2.0) | Dark mode, AI summary, weather charts, PWA |
-| Won't Have | Auth system, historical analytics, weather map |
+| Category | Features |
+|----------|---------|
+| **Must-have** | Current weather, city search, multi-city display |
+| **Nice-to-have** | 5-day forecast, responsive design, geolocation |
+| **Technical challenge** | weatherapi.com integration, JSON data processing |
+| **Out of scope (v1.0)** | Auth system, historical analytics, weather map |
 
 ---
 
