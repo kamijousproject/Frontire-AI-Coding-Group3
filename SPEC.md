@@ -4,6 +4,9 @@ Base URL: `/api/v1`
 
 ---
 
+### problem
+The goal of this project is to develop a web application that allows users to search and view weather information for multiple cities, including current weather, forecast data, and location-based weather.
+
 ### Health
 
 GET `/api/v1/health`
