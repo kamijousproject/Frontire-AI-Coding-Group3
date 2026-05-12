@@ -1,38 +1,47 @@
 {
   "version": "1.0",
-  "timestamp": "2026-05-08T16:53:59Z",
+  "timestamp": "2026-05-12T02:04:00.000Z",
   "phase": "01",
   "phase_name": "weather-dashboard-mvp",
   "phase_dir": ".planning/phases/01-weather-dashboard-mvp",
-  "plan": 2,
-  "task": 0,
-  "total_tasks": 10,
+  "plan": null,
+  "task": null,
+  "total_tasks": null,
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "Project Scaffolding", "status": "done", "commit": "6f5a537"},
-    {"id": 2, "name": "TypeScript Interfaces", "status": "done", "commit": "cae3495"},
-    {"id": 3, "name": "Input Validation Library", "status": "done", "commit": "b66982b"},
-    {"id": 4, "name": "Rate Limiting Middleware", "status": "done", "commit": "f23ab39"},
-    {"id": 5, "name": "Server-Side Cache", "status": "done", "commit": "558e849"},
-    {"id": 6, "name": "weatherapi.com Client", "status": "done", "commit": "a8950fe"}
+    {"id": "01-01", "name": "Foundation — types, cache, rate-limit, validation, weatherapi client", "status": "done", "commit": "a8950fe"},
+    {"id": "01-02", "name": "API Layer — health, current, multiple, search routes", "status": "done", "commit": "a86455e"},
+    {"id": "01-03", "name": "UI Layer — components, hooks, page assembly, Railway config", "status": "done", "commit": "b7a5fd2"}
   ],
-  "remaining_tasks": [
-    {"id": 7, "name": "Health Endpoint", "status": "not_started", "plan": "01-02"},
-    {"id": 8, "name": "Current Weather Endpoint", "status": "not_started", "plan": "01-02"},
-    {"id": 9, "name": "Multiple Weather Endpoint", "status": "not_started", "plan": "01-02"},
-    {"id": 10, "name": "City Search Endpoint", "status": "not_started", "plan": "01-02"},
-    {"id": 11, "name": "Condition Backgrounds Lib + UI Components + Page", "status": "not_started", "plan": "01-03"}
+  "remaining_tasks": [],
+  "blockers": [
+    {
+      "description": "8 manual tests (M1-M8) require live browser session with WEATHER_API_KEY",
+      "type": "human_action",
+      "workaround": "Run npm run dev with .env.local containing WEATHER_API_KEY, or deploy to Railway first"
+    }
   ],
-  "blockers": [],
-  "human_actions_pending": [],
+  "human_actions_pending": [
+    {
+      "action": "Run manual tests M1-M8 against live instance",
+      "context": "Static audit 26/26 pass. M1-M8 require real API key and browser (persistence, retry flow, responsive grid, background, 10-city guard, bad localStorage, X remove)",
+      "blocking": false
+    },
+    {
+      "action": "Deploy to Railway — add WEATHER_API_KEY to Railway Variables, connect GitHub repo",
+      "context": "railway.json present with NIXPACKS + npm run start. Repo at https://github.com/kamijousproject/Frontire-AI-Coding-Group3",
+      "blocking": false
+    }
+  ],
   "decisions": [
-    {"decision": "Next.js 16.2.6 + React 19", "rationale": "create-next-app latest scaffold; App Router works identically", "phase": "01"},
-    {"decision": "TailwindCSS v4 CSS-first config", "rationale": "No tailwind.config.ts; @import tailwindcss in globals.css; auto content detection", "phase": "01"},
-    {"decision": "CITY_PATTERN hyphen at end of character class", "rationale": "Avoids TypeScript regex range error from ambiguous \\-\\. sequence", "phase": "01"},
-    {"decision": "WEATHER_API_KEY server-only (process.env, never NEXT_PUBLIC_)", "rationale": "Security: never expose to client bundle", "phase": "01"},
-    {"decision": "In-memory rate limit and cache stores", "rationale": "Single-instance Railway deployment; resets on process restart per SPEC", "phase": "01"}
+    {"decision": "Next.js 16.2.6 + React 19 App Router", "rationale": "create-next-app latest", "phase": "01"},
+    {"decision": "TailwindCSS v4 CSS-first — no tailwind.config.ts", "rationale": "@import tailwindcss in globals.css, auto content detection", "phase": "01"},
+    {"decision": "API key process.env.WEATHER_API_KEY only, no NEXT_PUBLIC_", "rationale": "Server-side only, never expose to client bundle", "phase": "01"},
+    {"decision": "Promise.allSettled for /weather/multiple — always 200 with partial success", "rationale": "Resilient — one bad city doesn't fail all", "phase": "01"},
+    {"decision": "retryExhausted marked on first retry call, not result", "rationale": "Simplest approach — guarantees 1 retry max regardless of race conditions", "phase": "01"},
+    {"decision": "Global hook commands fixed: & node.exe syntax → node", "rationale": "Claude Code runs hooks via bash; PowerShell & operator caused syntax error blocking all Write/Edit operations", "phase": "01"}
   ],
-  "uncommitted_files": [".claude/settings.local.json"],
-  "next_action": "Execute plan 01-02: create src/app/api/v1/health/route.ts first (T7), then current/route.ts (T8), multiple/route.ts (T9), cities/search/route.ts (T10). Read node_modules/next/dist/docs/ for route handler conventions before writing any route.",
-  "context_notes": "Plan 01-01 complete and pushed to origin/main. STATE.md shows 0 completed plans — stale, update to 1 when resuming. src/app/api/ directory does not exist yet — must be created. All foundation libs ready in src/lib/ and src/types/."
+  "uncommitted_files": [],
+  "next_action": "Run manual tests M1-M8 against npm run dev (requires .env.local with WEATHER_API_KEY), then deploy to Railway",
+  "context_notes": "Phase 01 fully implemented and shipped to GitHub (origin/main). Build clean, TypeScript clean, 26/26 static must_have truths verified. All 3 plans complete. The only gap is runtime validation via browser. No code changes needed unless M1-M8 reveal bugs."
 }
