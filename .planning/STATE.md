@@ -2,8 +2,8 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: complete
-last_updated: "2026-05-12T09:00:00.000Z"
+status: shipped
+last_updated: "2026-05-12T02:10:00.000Z"
 progress:
   total_phases: 1
   completed_phases: 1
@@ -16,7 +16,7 @@ progress:
 
 phase: 01-weather-dashboard-mvp
 active_plan: null
-status: Phase 01 COMPLETE
+status: Phase 01 SHIPPED — direct-to-main (abe3bea)
 total_plans: 3
 completed_plans: 3
 
@@ -26,3 +26,4 @@ completed_plans: 3
 - 2026-05-08: Plan 01-01 complete — foundation libs (types, cache, rate-limit, validation, weatherapi)
 - 2026-05-12: Plan 01-02 complete — API routes (health, current, multiple, search) commit a86455e
 - 2026-05-12: Plan 01-03 complete — UI layer (components, hooks, assembly, Railway config) commit b7a5fd2
+- 2026-05-12: Phase 01 shipped — direct-to-main, 26/26 static checks pass, M1-M8 manual tests pending
