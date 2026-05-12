@@ -57,16 +57,16 @@ Plans:
 
 Plans:
 **Wave 1**
-- [ ] 03-01-PLAN.md — CityEntry type + SQLite cities/search route + validateSearchQuery
+- [x] 03-01-PLAN.md — CityEntry type + SQLite cities/search route + validateSearchQuery
 
 **Wave 2** *(blocked on Wave 1 — shares validation.ts)*
-- [ ] 03-02-PLAN.md — Coordinate-based weather/current and weather/multiple routes + validateCoordPairs
+- [x] 03-02-PLAN.md — Coordinate-based weather/current and weather/multiple routes + validateCoordPairs
 
 **Wave 3** *(blocked on Wave 1 — needs CityEntry type)*
-- [ ] 03-03-PLAN.md — useCityStorage (CityEntry[], v2 key, silent v1 reset) + useWeather (CityEntry[])
+- [x] 03-03-PLAN.md — useCityStorage (CityEntry[], v2 key, silent v1 reset) + useWeather (CityEntry[])
 
 **Wave 4** *(blocked on Wave 3 — needs updated hook signatures)*
-- [ ] 03-04-PLAN.md — SearchBar + WeatherGrid + page.tsx UI consumer wiring
+- [x] 03-04-PLAN.md — SearchBar + WeatherGrid + page.tsx UI consumer wiring
 
 ### Phase 04: Autocomplete UI
 **Goal**: Users can find and add any of 7,300 cities instantly via a type-ahead dropdown with full keyboard support
