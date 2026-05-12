@@ -46,12 +46,15 @@ Real-time weather at a glance — multiple cities, one page, no page refresh nee
 
 - ✓ SQLite city database (7,300 cities) bundled in repo — Phase 02
 - ✓ better-sqlite3 HMR-safe singleton (`getDb()`) — Phase 02
+- ✓ `/api/cities/search` server-side endpoint with SQLite queries — Phase 03
+- ✓ Weather lookup via lat/lon instead of city name string — Phase 03
+- ✓ localStorage schema migrated to CityEntry[] (weather_cities_v2) — Phase 03
 
 ### Active (v1.1)
 
-- [ ] `/api/cities/search` server-side endpoint with SQLite queries
-- [ ] Type-ahead SearchBar with instant local suggestions
-- [ ] Weather lookup via lat/lon instead of city name string
+- [ ] Type-ahead SearchBar with instant local suggestions (2+ chars, 200ms debounce, AbortController)
+- [ ] Dropdown: up to 8 results, City/Region/Country format, keyboard nav (↑↓ Enter Escape Tab)
+- [ ] Match highlighting — typed characters bold in suggestion rows
 - [ ] Manual browser tests M1-M8 against live Railway deployment
 - [ ] Production deployment with real WEATHER_API_KEY
 

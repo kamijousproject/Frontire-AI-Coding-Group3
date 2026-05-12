@@ -3,42 +3,42 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Local City Database + Instant Search
 status: executing
-last_updated: "2026-05-12T11:00:00.000Z"
-last_activity: 2026-05-12 -- Phase 03 all 4 plans executed, awaiting verification
+last_updated: "2026-05-12T11:06:00.000Z"
+last_activity: 2026-05-12 -- Phase 03 complete, routing to Phase 04 planning
 progress:
   total_phases: 3
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 7
-  completed_plans: 6
-  percent: 67
+  completed_plans: 7
+  percent: 83
 ---
 
 # GSD State
 
-phase: 03
+phase: 04
 active_plan: null
-status: Phase 03 planned — ready to execute
+status: Phase 04 — ready to plan
 
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-05-12)
 
 **Core value:** Real-time weather at a glance — multiple cities, one page, no page refresh needed.
-**Current focus:** Phase 03 — server-persistence-layer
+**Current focus:** Phase 04 — autocomplete-ui
 
 ## Current Position
 
-Phase: 03 (server-persistence-layer) — VERIFYING
-Plan: 4/4 executed
-Status: All plans complete — awaiting verification
-Progress: 1/3 phases complete
+Phase: 04 (autocomplete-ui) — PLANNING
+Plan: 0/? not yet planned
+Status: Phase 03 complete — ready to plan Phase 04
+Progress: 2/3 phases complete
 
 ```
-[██████    ] 33%
-✅ Phase 02 ··· 📋 Phase 03 ··· Phase 04
+[████████  ] 67%
+✅ Phase 02 ··· ✅ Phase 03 ··· 📋 Phase 04
 ```
 
-Last activity: 2026-05-12 -- Phase 03 planning complete, 4 plans, verification passed
+Last activity: 2026-05-12 -- Phase 03 complete (4/4 plans, TypeScript clean), Phase 04 planning next
 
 ## Accumulated Context
 
@@ -80,6 +80,7 @@ If better-sqlite3 fails to compile after two attempts:
 - 2026-05-12: Plan 02-03 complete — src/lib/db.ts HMR-safe singleton exported as getDb() (commits 5a1e45f, e974c6c)
 - 2026-05-12: Phase 02 complete — Railway native build verification approved by human; CITY-01, CITY-02 validated
 - 2026-05-12: Phase 03 planned — 4 plans (03-01 to 03-04), 4 waves, plan-checker passed, 5/5 REQ-IDs covered
+- 2026-05-12: Phase 03 complete — CityEntry type, SQLite search route, coord-based weather API, localStorage v2 migration (commits f454878–1810adb, TypeScript clean)
 
 ## Deferred Items
 
