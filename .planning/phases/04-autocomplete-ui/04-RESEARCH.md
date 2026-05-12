@@ -545,7 +545,7 @@ Rationale: All changes land in `src/components/SearchBar.tsx` only. The file is 
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Should highlighting apply to the full formatted string or city name only?**
    - What we know: AUTO-04 says "The characters the user typed appear bold in each suggestion row, making the prefix match visually distinct." The API does prefix matching on `name LIKE ?%`.
