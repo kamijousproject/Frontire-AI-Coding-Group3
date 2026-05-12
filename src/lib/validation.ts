@@ -89,6 +89,37 @@ export function validateSearchQuery(value: unknown): string | null {
   return trimmed;
 }
 
+/**
+ * Validate a pipe-separated list of lat:lon coordinate pairs.
+ * Each pair must be "lat:lon" with lat in [-90,90] and lon in [-180,180].
+ * Returns a parsed {lat, lon}[] on success, or null on any failure.
+ * Maximum 10 pairs (matches city list limit).
+ */
+export function validateCoordPairs(
+  value: unknown
+): { lat: number; lon: number }[] | null {
+  if (typeof value !== 'string' || value.trim() === '') return null;
+
+  const segments = value.split('|');
+  if (segments.length > 10) return null;
+
+  const result: { lat: number; lon: number }[] = [];
+
+  for (const segment of segments) {
+    const parts = segment.split(':');
+    if (parts.length !== 2) return null;
+
+    const lat = validateCoordParam(parts[0], -90, 90);
+    const lon = validateCoordParam(parts[1], -180, 180);
+    if (lat === null || lon === null) return null;
+
+    result.push({ lat, lon });
+  }
+
+  if (result.length === 0) return null;
+  return result;
+}
+
 // -- Inline test cases (manual verification) --
 // validateCityParam("London")              → "London"
 // validateCityParam("a")                  → null  (too short)
