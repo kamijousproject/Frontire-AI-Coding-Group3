@@ -42,9 +42,13 @@ Real-time weather at a glance — multiple cities, one page, no page refresh nee
 - ✓ Bounded retry (1 retry per city, permanent fail state after) — v1.0
 - ✓ Railway deployment configuration — v1.0
 
+### Validated (v1.1)
+
+- ✓ SQLite city database (7,300 cities) bundled in repo — Phase 02
+- ✓ better-sqlite3 HMR-safe singleton (`getDb()`) — Phase 02
+
 ### Active (v1.1)
 
-- [ ] SQLite city database (~5,000 major cities) bundled in repo
 - [ ] `/api/cities/search` server-side endpoint with SQLite queries
 - [ ] Type-ahead SearchBar with instant local suggestions
 - [ ] Weather lookup via lat/lon instead of city name string

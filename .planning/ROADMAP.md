@@ -19,7 +19,7 @@
 
 ### v1.1 Local City Database + Instant Search
 
-- [ ] **Phase 02: DB Foundation** — Bundle cities.db and validate Railway native compilation
+- [x] **Phase 02: DB Foundation** — Bundle cities.db and validate Railway native compilation ✅ 2026-05-12
 - [ ] **Phase 03: Server & Persistence Layer** — SQLite search route, coord-based weather API, localStorage schema migration
 - [ ] **Phase 04: Autocomplete UI** — SearchBar instant type-ahead, keyboard nav, match highlighting
 
@@ -72,6 +72,6 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 01. Weather Dashboard MVP | v1.0 | 3/3 | Complete | 2026-05-12 |
-| 02. DB Foundation | v1.1 | 3/3 | Verifying |  |
+| 02. DB Foundation | v1.1 | 3/3 | Complete | 2026-05-12 |
 | 03. Server & Persistence Layer | v1.1 | 0/? | Not started | - |
 | 04. Autocomplete UI | v1.1 | 0/? | Not started | - |
