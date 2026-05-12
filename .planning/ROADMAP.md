@@ -1,24 +1,23 @@
-# ROADMAP
+# Roadmap: Frontier AI — Weather Dashboard
 
-## Phase 01 — Weather Dashboard MVP
+## Milestones
 
-Status: planned
-Source spec: SPEC.md (imported via /gsd-import)
+- ✅ **v1.0 MVP** — Phase 01 (shipped 2026-05-12) — [archive](.planning/milestones/v1.0-ROADMAP.md)
 
-### Plans
+## Phases
 
-- **01-01-PLAN.md** — Foundation: Types, Libs, Infra
-  Project scaffolding, TypeScript interfaces, input validation, rate limiting, server-side cache, weatherapi.com client.
-  Requirements: 2, 10, 11
+<details>
+<summary>✅ v1.0 MVP (Phase 01) — SHIPPED 2026-05-12</summary>
 
-- **01-02-PLAN.md** — API Layer: Routes
-  Health, current weather, multiple cities, and city search endpoints. Server-side proxy with caching and validation.
-  Requirements: 1, 2, 3, 10
+- [x] Phase 01: Weather Dashboard MVP (3/3 plans) — completed 2026-05-12
+  - [x] 01-01: Foundation — Types, Libs, Infra
+  - [x] 01-02: API Layer — Routes
+  - [x] 01-03: UI — Components, Hooks, Assembly, Deployment
 
-- **01-03-PLAN.md** — UI: Components, Hooks, Assembly, Deployment
-  SearchBar, WeatherCard, WeatherGrid, localStorage hook, weather data hook, main page assembly, Railway config.
-  Requirements: 1, 3, 4, 5, 6, 7
+</details>
 
-### Dependencies
+## Progress
 
-01-01 → 01-02 → 01-03 (sequential)
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 01. Weather Dashboard MVP | v1.0 | 3/3 | Complete | 2026-05-12 |
