@@ -81,7 +81,7 @@ Plans:
 
 Plans:
 **Wave 1**
-- [ ] 04-01-PLAN.md — Rewrite SearchBar.tsx: ARIA combobox + AbortController + 200ms debounce + keyboard nav + prefix highlight + "No cities found for '{q}'" empty state (closes AUTO-01..04)
+- [x] 04-01-PLAN.md — Rewrite SearchBar.tsx: ARIA combobox + AbortController + 200ms debounce + keyboard nav + prefix highlight + "No cities found for '{q}'" empty state (closes AUTO-01..04)
 
 **UI hint**: yes
 
@@ -92,4 +92,4 @@ Plans:
 | 01. Weather Dashboard MVP | v1.0 | 3/3 | Complete | 2026-05-12 |
 | 02. DB Foundation | v1.1 | 3/3 | Complete | 2026-05-12 |
 | 03. Server & Persistence Layer | v1.1 | 4/4 | Complete | 2026-05-12 |
-| 04. Autocomplete UI | v1.1 | 0/1 | Planned | - |
+| 04. Autocomplete UI | v1.1 | 1/1 | Executing | - |
