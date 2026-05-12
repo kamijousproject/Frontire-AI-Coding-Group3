@@ -5,16 +5,22 @@ import { useCityStorage } from '@/hooks/useLocalStorage'
 import { useWeather } from '@/hooks/useWeather'
 import { SearchBar } from '@/components/SearchBar'
 import { WeatherGrid } from '@/components/WeatherGrid'
+import type { CityEntry } from '@/types/weather'
+
+function coordKey(city: CityEntry): string {
+  return `${city.lat.toFixed(4)},${city.lon.toFixed(4)}`
+}
 
 export default function Home() {
   const { cities, addCity, removeCity } = useCityStorage()
   const { results, loading, retryCity } = useWeather(cities)
   const [retryExhausted, setRetryExhausted] = useState<Map<string, boolean>>(new Map())
 
-  const handleRetry = useCallback((city: string) => {
-    if (retryExhausted.get(city)) return
+  const handleRetry = useCallback((city: CityEntry) => {
+    const key = coordKey(city)
+    if (retryExhausted.get(key)) return
     retryCity(city)
-    setRetryExhausted((prev) => new Map(prev).set(city, true))
+    setRetryExhausted((prev) => new Map(prev).set(key, true))
   }, [retryCity, retryExhausted])
 
   return (

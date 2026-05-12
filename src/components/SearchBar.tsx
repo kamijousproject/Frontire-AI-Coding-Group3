@@ -1,16 +1,16 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import type { CitySearchResult } from '@/types/weather'
+import type { CityEntry } from '@/types/weather'
 
 interface SearchBarProps {
-  cities: string[]
-  onAddCity: (city: string) => void
+  cities: CityEntry[]
+  onAddCity: (city: CityEntry) => void
 }
 
 export function SearchBar({ cities, onAddCity }: SearchBarProps) {
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState<CitySearchResult[]>([])
+  const [results, setResults] = useState<CityEntry[]>([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [duplicateError, setDuplicateError] = useState(false)
 
@@ -45,7 +45,7 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
       try {
         const res = await fetch(`/api/v1/cities/search?q=${encodeURIComponent(val)}`)
         if (res.ok) {
-          const data: CitySearchResult[] = await res.json()
+          const data: CityEntry[] = await res.json()
           setResults(data)
           setShowDropdown(true)
         }
@@ -59,16 +59,15 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
     if (e.key === 'Escape') setShowDropdown(false)
   }
 
-  function handleSelect(result: CitySearchResult) {
+  function handleSelect(result: CityEntry) {
     if (cities.length >= 10) return
-    const norm = result.name.toLowerCase().trim()
-    if (cities.some((c) => c.toLowerCase().trim() === norm)) {
+    if (cities.some((c) => c.id === result.id)) {
       setDuplicateError(true)
       if (dupTimerRef.current) clearTimeout(dupTimerRef.current)
       dupTimerRef.current = setTimeout(() => setDuplicateError(false), 3000)
       return
     }
-    onAddCity(result.name)
+    onAddCity(result)
     setQuery('')
     setResults([])
     setShowDropdown(false)
@@ -96,8 +95,8 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
           {results.length === 0 ? (
             <li className="px-4 py-2 text-sm text-gray-500">No cities found</li>
           ) : (
-            results.map((r, i) => (
-              <li key={i}>
+            results.map((r) => (
+              <li key={r.id}>
                 <button
                   type="button"
                   disabled={isFull}
@@ -105,7 +104,7 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
                   onClick={() => handleSelect(r)}
                   className="w-full px-4 py-2 text-left text-sm text-gray-800 hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {r.name}, {r.region}, {r.country}
+                  {r.name}{r.region ? `, ${r.region}` : ''}, {r.country}
                 </button>
               </li>
             ))
