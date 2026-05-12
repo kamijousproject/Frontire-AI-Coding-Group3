@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rtk git *)",
+      "Bash(git merge *)",
+      "Bash(rtk ls *)",
+      "Bash(echo \"merge_exit=$?\")",
+      "Bash(git stash *)",
+      "Bash(rtk read *)",
+      "Bash(cat)",
+      "Bash(git add *)",
+      "Bash(git branch *)",
+      "Bash(rtk lint *)",
+      "Bash(rtk tsc *)",
+      "Bash(export PATH=\"$PATH:/home/user/.npm/_npx/4db0de1f85c3165e/node_modules/.bin\")",
+      "Bash(gsd-sdk query *)",
+      "Bash(rtk grep *)",
+      "Bash(rtk next *)",
+      "Bash(node node_modules/.bin/next build)",
+      "Bash(rtk npx *)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(list\\(d.get\\('packages',{}\\).keys\\(\\)\\)[:10]\\)\")",
+      "Bash(npm install *)",
+      "Bash(node_modules/.bin/next build *)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('incomplete:', d['incomplete']\\)\")",
+      "Skill(gsd-execute-phase)",
+      "PowerShell(New-Item *)",
+      "PowerShell(Get-Content *)",
+      "PowerShell(Set-Content *)",
+      "WebFetch(domain:station.railway.com)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(npx --yes ctx7@latest docs /wiselibs/better-sqlite3 \"open database read-only prepare statement all get\")",
+      "WebFetch(domain:simplemaps.com)",
+      "Bash(cp .planning/STATE.md /tmp/state_backup.md)",
+      "Bash(cp .planning/ROADMAP.md /tmp/roadmap_backup.md)",
+      "Bash(cp /tmp/state_backup.md .planning/STATE.md)",
+      "Bash(cp /tmp/roadmap_backup.md .planning/ROADMAP.md)",
+      "Bash(node *)",
+      "Bash(python3 -c \"import json; c=json.load\\(open\\('.planning/config.json'\\)\\); print\\(c.get\\('workflow',{}\\).get\\('code_review','true'\\)\\)\")",
+      "Skill(gsd-code-review)"
+    ]
+  }
+}
