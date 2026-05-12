@@ -17,6 +17,7 @@ The application fetches live data from **weatherapi.com** (free tier: 1,000 call
 - **Backend**: Next.js API Routes (built-in) — acts as API proxy
 - **External API**: weatherapi.com
 - **Deployment**: Railway (single instance)
+- **Database**: SQLite store the all cities in the world
 
 ### Frontend Style
 

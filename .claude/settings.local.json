@@ -25,7 +25,12 @@
       "Skill(gsd-execute-phase)",
       "PowerShell(New-Item *)",
       "PowerShell(Get-Content *)",
-      "PowerShell(Set-Content *)"
+      "PowerShell(Set-Content *)",
+      "WebFetch(domain:station.railway.com)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(npx --yes ctx7@latest docs /wiselibs/better-sqlite3 \"open database read-only prepare statement all get\")",
+      "WebFetch(domain:simplemaps.com)"
     ]
   }
 }
