@@ -59,3 +59,13 @@ export const APP_ERROR_CODES = {
   1004: 'INVALID_PARAM',
   1005: 'MAX_CITIES_EXCEEDED',
 } as const;
+
+export interface CityEntry {
+  id: number;
+  name: string;
+  country: string;
+  region: string | null;
+  lat: number;
+  lon: number;
+  timezone: string;
+}

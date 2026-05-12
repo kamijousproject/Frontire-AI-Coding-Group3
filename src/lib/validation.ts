@@ -75,6 +75,20 @@ export function validateCoordParam(
   return parsed;
 }
 
+/**
+ * Validate a city search query string.
+ * Minimum 2 characters, maximum 100 characters.
+ * Allows: a-z A-Z 0-9 space comma apostrophe hyphen period
+ * Returns the trimmed string on success, or null on failure.
+ */
+export function validateSearchQuery(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  if (trimmed.length < 2 || trimmed.length > 100) return null;
+  if (!CITY_PATTERN.test(trimmed)) return null;
+  return trimmed;
+}
+
 // -- Inline test cases (manual verification) --
 // validateCityParam("London")              → "London"
 // validateCityParam("a")                  → null  (too short)
