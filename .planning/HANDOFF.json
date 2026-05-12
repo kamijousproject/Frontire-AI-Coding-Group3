@@ -1,39 +1,69 @@
 {
   "version": "1.0",
-  "timestamp": "2026-05-12T11:15:00Z",
-  "phase": "03",
-  "phase_name": "server-persistence-layer",
-  "phase_dir": ".planning/phases/03-server-persistence-layer",
-  "plan": 4,
-  "task": null,
-  "total_tasks": 8,
-  "status": "verifying",
+  "timestamp": "2026-05-12T11:04:54.249Z",
+  "phase": "04",
+  "phase_name": "autocomplete-ui",
+  "phase_dir": ".planning/phases/04-autocomplete-ui",
+  "plan": 1,
+  "task": 1,
+  "total_tasks": 1,
+  "status": "paused",
   "completed_tasks": [
-    {"id": "03-01-T1", "name": "CityEntry type + validateSearchQuery", "status": "done", "commit": "f454878"},
-    {"id": "03-01-T2", "name": "SQLite cities/search route", "status": "done", "commit": "b4ceee7"},
-    {"id": "03-02-T1", "name": "validateCoordPairs in validation.ts", "status": "done", "commit": "dffb78a"},
-    {"id": "03-02-T2", "name": "Coord-based weather/current + weather/multiple", "status": "done", "commit": "9ade0ed"},
-    {"id": "03-03-T1", "name": "useCityStorage (CityEntry[], v2 key, v1 silent reset)", "status": "done", "commit": "8799874"},
-    {"id": "03-03-T2", "name": "useWeather + UI wiring (Rule 3 auto-fix covered 03-04)", "status": "done", "commit": "a11a0d4"},
-    {"id": "03-04-T1", "name": "SearchBar/WeatherGrid/page.tsx verification", "status": "done", "commit": "1810adb"},
-    {"id": "03-04-T2", "name": "All acceptance criteria confirmed", "status": "done", "commit": "1810adb"}
+    {
+      "id": 1,
+      "name": "Rewrite SearchBar.tsx — ARIA combobox + AbortController + 200ms debounce + keyboard nav + prefix highlight",
+      "status": "done",
+      "commit": "34a665b"
+    }
   ],
   "remaining_tasks": [],
-  "blockers": [],
+  "blockers": [
+    {
+      "description": "Manual browser tests M1-M8 pending Railway deployment with live WEATHER_API_KEY",
+      "type": "human_action",
+      "workaround": "Can verify TypeScript + grep assertions locally; browser tests require live deployment"
+    }
+  ],
   "human_actions_pending": [
     {
-      "action": "Run phase 03 verification (gsd-verifier) — context exhausted before this step ran",
-      "context": "All 4 plans executed. TypeScript clean. Verification not yet run. /gsd-resume-work will detect VERIFYING state and route to verifier.",
+      "action": "Run /gsd-verify-work 04 to complete goal-backward verification",
+      "context": "All plans complete, TypeScript clean — verifier checks phase goal is achieved",
       "blocking": true
+    },
+    {
+      "action": "git push origin main",
+      "context": "Project is ~20 commits ahead of origin/main; use ! git push in terminal",
+      "blocking": false
+    },
+    {
+      "action": "Railway deployment with real WEATHER_API_KEY",
+      "context": "Manual browser tests M1-M8 require live deployment to validate full flow",
+      "blocking": false
     }
   ],
   "decisions": [
-    {"decision": "weather_cities_v2 localStorage key", "rationale": "Cannot recover lat/lon from v1.0 string[] — silent reset", "phase": "03"},
-    {"decision": "Pipe/colon delimiter for /multiple", "rationale": "Avoids ambiguity with comma in lat,lon pairs", "phase": "03"},
-    {"decision": "toFixed(4) on all lat/lon values", "rationale": "Consistency for URL construction and cache keys", "phase": "03"},
-    {"decision": "03-03 Rule 3 auto-fix absorbed 03-04 scope", "rationale": "TypeScript compilation required UI component wiring upfront — Wave 4 was verification-only", "phase": "03"}
+    {
+      "decision": "AbortController created inside setTimeout callback body (not outside)",
+      "rationale": "Each scheduled fetch needs its own controller; creating outside causes the abort to cancel the timer not the fetch",
+      "phase": "04"
+    },
+    {
+      "decision": "onMouseDown + e.preventDefault() replaces button onClick on list items",
+      "rationale": "onClick fires after onBlur — dropdown closes before selection registers; onMouseDown fires first",
+      "phase": "04"
+    },
+    {
+      "decision": "useId() from React 19 for ARIA listbox/option IDs",
+      "rationale": "SSR-safe stable IDs; aria-activedescendant must match li id exactly",
+      "phase": "04"
+    },
+    {
+      "decision": "HighlightMatch splits only city name at query.length; region/country plain text",
+      "rationale": "Spec ambiguity resolved: bold prefix on city name only per UI-SPEC design contract",
+      "phase": "04"
+    }
   ],
   "uncommitted_files": [],
-  "next_action": "Run /gsd-resume-work → detects Phase 03 VERIFYING → spawns gsd-verifier → checks must_haves against codebase → creates 03-VERIFICATION.md → routes to completion or gap closure",
-  "context_notes": "All 4 plans executed cleanly across 4 waves. TypeScript passes (exit 0). No worktrees remain. Context hit 68% limit — stopped before the verify_phase_goal step. Code review gate and regression gate also not yet run. Resume in fresh window."
+  "next_action": "/gsd-verify-work 04 — verifier checks all 4 AUTO requirements against live code",
+  "context_notes": "Phase 04 execution complete. SearchBar.tsx rewritten (116→203 lines). TypeScript clean. All 10 acceptance criteria assertions verified via grep. Verifier not yet run — that is the one remaining step before phase transition and milestone close."
 }
