@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useId } from 'react'
 import type { CityEntry } from '@/types/weather'
 
 interface SearchBarProps {
@@ -8,15 +8,45 @@ interface SearchBarProps {
   onAddCity: (city: CityEntry) => void
 }
 
+function HighlightMatch({ text, query }: { text: string; query: string }): React.ReactNode {
+  if (!query || !text.toLowerCase().startsWith(query.toLowerCase())) {
+    return <>{text}</>
+  }
+  const prefix = text.slice(0, query.length)
+  const rest = text.slice(query.length)
+  return (
+    <>
+      <strong>{prefix}</strong>
+      {rest}
+    </>
+  )
+}
+
+function formatSuggestion(city: CityEntry, query: string): React.ReactNode {
+  const suffix = city.region ? `, ${city.region}, ${city.country}` : `, ${city.country}`
+  // HighlightMatch wraps only the city name — region and country remain plain text
+  return (
+    <>
+      <HighlightMatch text={city.name} query={query} />
+      {suffix}
+    </>
+  )
+}
+
 export function SearchBar({ cities, onAddCity }: SearchBarProps) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<CityEntry[]>([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [duplicateError, setDuplicateError] = useState(false)
+  const [highlightedIndex, setHighlightedIndex] = useState(-1)
 
   const containerRef = useRef<HTMLDivElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const abortRef = useRef<AbortController | null>(null)
   const dupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const listboxId = useId()
+  const getOptionId = (i: number) => `${listboxId}-opt-${i}`
 
   useEffect(() => {
     function handleMouseDown(e: MouseEvent) {
@@ -28,12 +58,19 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
     return () => document.removeEventListener('mousedown', handleMouseDown)
   }, [])
 
+  // Cancel any in-flight fetch on unmount
+  useEffect(() => {
+    return () => { if (abortRef.current) abortRef.current.abort() }
+  }, [])
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const val = e.target.value
     setQuery(val)
     setDuplicateError(false)
+    setHighlightedIndex(-1)
 
     if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (abortRef.current) abortRef.current.abort()
 
     if (val.length < 2) {
       setResults([])
@@ -42,21 +79,53 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
     }
 
     debounceRef.current = setTimeout(async () => {
+      const controller = new AbortController()
+      abortRef.current = controller
       try {
-        const res = await fetch(`/api/v1/cities/search?q=${encodeURIComponent(val)}`)
+        const res = await fetch(
+          `/api/v1/cities/search?q=${encodeURIComponent(val)}`,
+          { signal: controller.signal }
+        )
         if (res.ok) {
           const data: CityEntry[] = await res.json()
           setResults(data)
           setShowDropdown(true)
         }
-      } catch {
-        // silent — search is non-critical
+      } catch (err) {
+        if (err instanceof Error && err.name === 'AbortError') return
+        // other errors: silent — search is non-critical
       }
-    }, 300)
+    }, 200) // AUTO-01: 200ms debounce
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Escape') setShowDropdown(false)
+    if (!showDropdown) return
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault()
+        setHighlightedIndex(Math.min(highlightedIndex + 1, results.length - 1))
+        break
+      case 'ArrowUp':
+        e.preventDefault()
+        setHighlightedIndex(Math.max(highlightedIndex - 1, 0))
+        break
+      case 'Enter':
+        e.preventDefault()
+        if (highlightedIndex >= 0 && results[highlightedIndex]) {
+          handleSelect(results[highlightedIndex])
+        }
+        break
+      case 'Escape':
+        setShowDropdown(false)
+        setHighlightedIndex(-1)
+        break
+      case 'Tab':
+        setShowDropdown(false)
+        setHighlightedIndex(-1)
+        // no preventDefault — let Tab continue normal focus movement
+        break
+    }
   }
 
   function handleSelect(result: CityEntry) {
@@ -71,6 +140,7 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
     setQuery('')
     setResults([])
     setShowDropdown(false)
+    setHighlightedIndex(-1)
   }
 
   const isFull = cities.length >= 10
@@ -79,6 +149,11 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
     <div ref={containerRef} className="relative w-full max-w-md">
       <input
         type="text"
+        role="combobox"
+        aria-expanded={showDropdown}
+        aria-controls={listboxId}
+        aria-autocomplete="list"
+        aria-activedescendant={highlightedIndex >= 0 ? getOptionId(highlightedIndex) : undefined}
         value={query}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
@@ -91,21 +166,33 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
       )}
 
       {showDropdown && (
-        <ul className="absolute z-10 mt-1 w-full rounded-lg border border-white/20 bg-white/90 shadow-lg backdrop-blur-sm">
+        <ul
+          role="listbox"
+          id={listboxId}
+          className="absolute z-10 mt-1 w-full rounded-lg border border-white/20 bg-white/90 shadow-lg backdrop-blur-sm"
+        >
           {results.length === 0 ? (
-            <li className="px-4 py-2 text-sm text-gray-500">No cities found</li>
+            <li
+              role="option"
+              aria-disabled="true"
+              className="px-4 py-2 text-sm text-gray-500"
+            >
+              No cities found for &apos;{query}&apos;
+            </li>
           ) : (
-            results.map((r) => (
-              <li key={r.id}>
-                <button
-                  type="button"
-                  disabled={isFull}
-                  title={isFull ? 'City list full (10/10)' : undefined}
-                  onClick={() => handleSelect(r)}
-                  className="w-full px-4 py-2 text-left text-sm text-gray-800 hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {r.name}{r.region ? `, ${r.region}` : ''}, {r.country}
-                </button>
+            results.map((r, i) => (
+              <li
+                key={r.id}
+                role="option"
+                id={getOptionId(i)}
+                aria-selected={i === highlightedIndex}
+                tabIndex={-1}
+                onMouseDown={(e) => { e.preventDefault(); if (!isFull) handleSelect(r) }}
+                className={`px-4 py-2 text-sm text-gray-800 cursor-pointer ${
+                  i === highlightedIndex ? 'bg-blue-100' : 'hover:bg-blue-50'
+                }${isFull ? ' opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {formatSuggestion(r, query)}
               </li>
             ))
           )}
