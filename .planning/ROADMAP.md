@@ -53,7 +53,20 @@ Plans:
   2. `GET /api/weather/current?q=13.7500,100.5170` returns the same `WeatherData` shape as the previous city-name query (weatherapi.com accepts lat,lon)
   3. `GET /api/weather/multiple?cities=13.7500:100.5170|48.8600:2.3500` returns a partial-success multi-city payload using the pipe/colon delimiter format
   4. On a fresh browser session, `localStorage.getItem('weather_cities_v2')` stores a `CityEntry[]` array; the old `weather_cities` string-array key is ignored and produces an empty dashboard silently
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+**Wave 1**
+- [ ] 03-01-PLAN.md — CityEntry type + SQLite cities/search route + validateSearchQuery
+
+**Wave 2** *(blocked on Wave 1 — shares validation.ts)*
+- [ ] 03-02-PLAN.md — Coordinate-based weather/current and weather/multiple routes + validateCoordPairs
+
+**Wave 3** *(blocked on Wave 1 — needs CityEntry type)*
+- [ ] 03-03-PLAN.md — useCityStorage (CityEntry[], v2 key, silent v1 reset) + useWeather (CityEntry[])
+
+**Wave 4** *(blocked on Wave 3 — needs updated hook signatures)*
+- [ ] 03-04-PLAN.md — SearchBar + WeatherGrid + page.tsx UI consumer wiring
 
 ### Phase 04: Autocomplete UI
 **Goal**: Users can find and add any of 7,300 cities instantly via a type-ahead dropdown with full keyboard support
@@ -73,5 +86,5 @@ Plans:
 |-------|-----------|----------------|--------|-----------|
 | 01. Weather Dashboard MVP | v1.0 | 3/3 | Complete | 2026-05-12 |
 | 02. DB Foundation | v1.1 | 3/3 | Complete | 2026-05-12 |
-| 03. Server & Persistence Layer | v1.1 | 0/? | Not started | - |
+| 03. Server & Persistence Layer | v1.1 | 0/4 | Not started | - |
 | 04. Autocomplete UI | v1.1 | 0/? | Not started | - |
