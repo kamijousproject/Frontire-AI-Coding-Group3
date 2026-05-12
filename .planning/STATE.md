@@ -1,15 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: Weather Dashboard MVP
-status: archived
-last_updated: "2026-05-12T02:20:00.000Z"
+milestone: v1.1
+milestone_name: Local City Database + Instant Search
+status: planning
+last_updated: "2026-05-12T02:56:00.404Z"
+last_activity: 2026-05-12
 progress:
-  total_phases: 1
-  completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # GSD State
@@ -41,3 +42,10 @@ Items acknowledged and deferred at milestone close on 2026-05-12:
 | Category | Item | Status |
 |----------|------|--------|
 | manual_tests | M1-M8 browser tests | Pending live WEATHER_API_KEY + Railway deployment |
+
+## Current Position
+
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-05-12 — Milestone v1.1 started

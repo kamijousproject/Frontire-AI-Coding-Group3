@@ -15,6 +15,17 @@ Real-time weather at a glance — multiple cities, one page, no page refresh nee
 - **Deployment:** Railway (NIXPACKS builder)
 - **API:** weatherapi.com (current weather + city search)
 
+## Current Milestone: v1.1 Local City Database + Instant Search
+
+**Goal:** Replace live weatherapi.com city search with a bundled SQLite database of ~5,000 major world cities, enabling instant type-ahead autocomplete and more precise weather lookups via lat/lon.
+
+**Target features:**
+- `cities.db` bundled in repo (city, country, region, lat, lon, timezone, population)
+- Server-side `/api/cities/search` endpoint querying SQLite
+- SearchBar upgraded to instant type-ahead (local results, no API call per keystroke)
+- Weather fetched by lat/lon coordinates instead of city name string
+- Same add-to-dashboard flow preserved
+
 ## Requirements
 
 ### Validated (v1.0)
@@ -31,8 +42,12 @@ Real-time weather at a glance — multiple cities, one page, no page refresh nee
 - ✓ Bounded retry (1 retry per city, permanent fail state after) — v1.0
 - ✓ Railway deployment configuration — v1.0
 
-### Active (next milestone)
+### Active (v1.1)
 
+- [ ] SQLite city database (~5,000 major cities) bundled in repo
+- [ ] `/api/cities/search` server-side endpoint with SQLite queries
+- [ ] Type-ahead SearchBar with instant local suggestions
+- [ ] Weather lookup via lat/lon instead of city name string
 - [ ] Manual browser tests M1-M8 against live Railway deployment
 - [ ] Production deployment with real WEATHER_API_KEY
 
@@ -65,5 +80,22 @@ Static audit: 26/26 must_have truths pass. Manual M1-M8 tests pending live deplo
 - Single Railway instance — in-memory cache and rate limit state acceptable
 - weatherapi.com free tier limits apply
 
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd-transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd-complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
 ---
-*Last updated: 2026-05-12 after v1.0 milestone*
+*Last updated: 2026-05-12 — v1.1 milestone started*
