@@ -37,7 +37,10 @@
 **Plans**: 3 plans
 
 Plans:
+**Wave 1**
 - [ ] 02-01-PLAN.md — Install better-sqlite3 + configure next.config.ts
+
+**Wave 2** *(blocked on Wave 1 completion)*
 - [ ] 02-02-PLAN.md — worldcities.csv + build script + generate and commit cities.db
 - [ ] 02-03-PLAN.md — src/lib/db.ts HMR-safe singleton
 

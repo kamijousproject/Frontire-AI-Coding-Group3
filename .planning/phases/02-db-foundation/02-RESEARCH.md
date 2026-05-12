@@ -534,22 +534,22 @@ export function getDb(): InstanceType<typeof Database> {
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Simplemaps CSV quoting edge cases**
+1. **Simplemaps CSV quoting edge cases** — RESOLVED
    - What we know: Simplemaps Basic CSV uses quotes around fields when needed (standard RFC 4180 CSV)
    - What's unclear: Whether any city/country/region names in the 7,300-row dataset embed a literal comma inside a quoted field
-   - Recommendation: After running `build-cities-db.mjs`, verify row count equals expected (~7,300). If count is wrong, replace simple split with a two-pass quote-aware parser.
+   - Resolution: After running `build-cities-db.mjs`, verify row count equals expected (~7,300). Plan 02-02 Task 2 includes an explicit row count acceptance criterion (7,000–7,500). If count is wrong, replace simple split with a quote-aware parser. Row count check is the recovery gate.
 
-2. **Railway builder: NIXPACKS vs Railpack migration status**
+2. **Railway builder: NIXPACKS vs Railpack migration status** — RESOLVED
    - What we know: `railway.json` specifies `"builder": "NIXPACKS"` (verified by reading the file). NIXPACKS is explicitly locked.
    - What's unclear: Whether Railway has auto-migrated this service to Railpack despite the explicit config
-   - Recommendation: On first deploy, confirm the Railway dashboard shows NIXPACKS (not Railpack) as the builder. If migrated, the Railpack fallback from STACK.md applies (`RAILPACK_BUILD_APT_PACKAGES=python3 g++ make` env var).
+   - Resolution: On first deploy, confirm the Railway dashboard shows NIXPACKS (not Railpack). If migrated, apply Railpack fallback: set env var `RAILPACK_BUILD_APT_PACKAGES=python3 g++ make` in Railway dashboard. This is a one-step recovery documented in STACK.md.
 
-3. **better-sqlite3 prebuilt binary for Node.js 20 on Railway**
+3. **better-sqlite3 prebuilt binary for Node.js 20 on Railway** — RESOLVED
    - What we know: Local dev environment runs Node.js 20.20.2 (verified). better-sqlite3 12.9.0 ships prebuilts for LTS Node versions.
    - What's unclear: Which Node.js version Railway's NIXPACKS image uses for this project; whether a prebuilt matches.
-   - Recommendation: Check Railway deployment logs for `node-pre-gyp` download vs compile step. If it downloads, no issue. If it compiles, ensure it succeeds.
+   - Resolution: Check Railway build logs for `node-pre-gyp install` vs compile. If prebuilt downloads: no action. If compile: ensure it completes (NIXPACKS provides Python/GCC by default for projects with native deps). If compile fails: add `nixpacks.toml` per D-09. This is a well-defined fallback chain with clear signals at each step.
 
 ---
 
