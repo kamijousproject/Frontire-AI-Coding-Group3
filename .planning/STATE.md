@@ -3,14 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Local City Database + Instant Search
 status: planning
-last_updated: "2026-05-12T00:00:00.000Z"
-last_activity: 2026-05-12
+last_updated: "2026-05-12T03:24:49.339Z"
+last_activity: 2026-05-12 — Roadmap created for v1.1
 progress:
   total_phases: 3
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
-  percent: 0
 ---
 
 # GSD State
@@ -62,6 +61,7 @@ Last activity: 2026-05-12 — Roadmap created for v1.1
 ### Railway Fallback
 
 If better-sqlite3 fails to compile after two attempts:
+
 1. Try nixpacks.toml override with `nixPkgs = ["python3", "gcc", "gnumake"]`
 2. If still failing: pivot to cities.json + Array.filter prefix match (~2-3h rework, zero native deps)
 
