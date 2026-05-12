@@ -54,18 +54,16 @@
 
 ## Traceability
 
-_Populated by roadmapper in next step._
-
 | REQ-ID | Phase | Plan |
 |--------|-------|------|
-| CITY-01 | — | — |
-| CITY-02 | — | — |
-| API-01 | — | — |
-| API-02 | — | — |
-| API-03 | — | — |
-| AUTO-01 | — | — |
-| AUTO-02 | — | — |
-| AUTO-03 | — | — |
-| AUTO-04 | — | — |
-| PERSIST-01 | — | — |
-| PERSIST-02 | — | — |
+| CITY-01 | Phase 02 | — |
+| CITY-02 | Phase 02 | — |
+| API-01 | Phase 03 | — |
+| API-02 | Phase 03 | — |
+| API-03 | Phase 03 | — |
+| PERSIST-01 | Phase 03 | — |
+| PERSIST-02 | Phase 03 | — |
+| AUTO-01 | Phase 04 | — |
+| AUTO-02 | Phase 04 | — |
+| AUTO-03 | Phase 04 | — |
+| AUTO-04 | Phase 04 | — |
