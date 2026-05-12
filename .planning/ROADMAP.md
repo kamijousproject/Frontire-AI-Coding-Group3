@@ -41,8 +41,8 @@ Plans:
 - [x] 02-01-PLAN.md — Install better-sqlite3 + configure next.config.ts
 
 **Wave 2** *(blocked on Wave 1 completion)*
-- [ ] 02-02-PLAN.md — worldcities.csv + build script + generate and commit cities.db
-- [ ] 02-03-PLAN.md — src/lib/db.ts HMR-safe singleton
+- [x] 02-02-PLAN.md — worldcities.csv + build script + generate and commit cities.db
+- [x] 02-03-PLAN.md — src/lib/db.ts HMR-safe singleton
 
 ### Phase 03: Server & Persistence Layer
 **Goal**: The server exposes a coordinate-based weather API and a SQLite-backed city search endpoint, and the localStorage schema is migrated to CityEntry[]
@@ -72,6 +72,6 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 01. Weather Dashboard MVP | v1.0 | 3/3 | Complete | 2026-05-12 |
-| 02. DB Foundation | v1.1 | 1/3 | In Progress|  |
+| 02. DB Foundation | v1.1 | 3/3 | Verifying |  |
 | 03. Server & Persistence Layer | v1.1 | 0/? | Not started | - |
 | 04. Autocomplete UI | v1.1 | 0/? | Not started | - |
