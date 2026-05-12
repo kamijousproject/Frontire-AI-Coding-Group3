@@ -77,7 +77,12 @@ Plans:
   2. The dropdown shows up to 8 suggestions in `City, Region, Country` format (region omitted if null), ranked by population DESC; when no results match, the text "No cities found for '{input}'" is shown
   3. Pressing ↑/↓ moves the highlighted suggestion; Enter adds the highlighted city to the dashboard; Escape closes the dropdown; Tab dismisses without selecting
   4. The characters the user typed appear bold (highlighted) in each suggestion row, making the prefix match visually distinct
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+**Wave 1**
+- [ ] 04-01-PLAN.md — Rewrite SearchBar.tsx: ARIA combobox + AbortController + 200ms debounce + keyboard nav + prefix highlight + "No cities found for '{q}'" empty state (closes AUTO-01..04)
+
 **UI hint**: yes
 
 ## Progress
@@ -87,4 +92,4 @@ Plans:
 | 01. Weather Dashboard MVP | v1.0 | 3/3 | Complete | 2026-05-12 |
 | 02. DB Foundation | v1.1 | 3/3 | Complete | 2026-05-12 |
 | 03. Server & Persistence Layer | v1.1 | 4/4 | Complete | 2026-05-12 |
-| 04. Autocomplete UI | v1.1 | 0/? | Not started | - |
+| 04. Autocomplete UI | v1.1 | 0/1 | Planned | - |
