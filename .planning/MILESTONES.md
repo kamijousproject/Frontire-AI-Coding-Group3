@@ -1,5 +1,36 @@
 # MILESTONES
 
+## v1.2 — Forecast, Auto-location & Modern UI
+
+**Shipped:** 2026-05-13
+**Phases:** 05–07 | **Plans:** 3
+**Git range:** (current HEAD)
+
+### Delivered
+
+A complete visual overhaul with 5-day weather forecast panels, automatic location detection on first load, and enhanced user controls. The UI now features a modern glassmorphism design system with dynamic weather-based gradients, drag-and-drop city reordering, temperature unit toggle, and manual refresh capability.
+
+### Key Accomplishments
+
+1. **5-Day Forecast Panel** — Expandable forecast in each WeatherCard showing date, high/low temperatures, condition icons; fetched from `/api/v1/weather/forecast`
+2. **Auto-location on First Load** — Browser geolocation API requests permission when dashboard is empty; gracefully falls back to empty state on denial
+3. **Complete UI Redesign** — Glassmorphism cards, dynamic gradients based on weather conditions (sunny, cloudy, rain, snow, thunder), hover effects
+4. **Temperature Unit Toggle** — °C / °F switch in header with localStorage persistence; affects all temperature displays
+5. **Manual Refresh Button** — Header control to bypass cache and reload all weather data with loading indicator
+6. **City Drag & Drop Reordering** — HTML5 DND API with localStorage persistence for custom city ordering
+7. **Enhanced SearchBar** — Search icon, dark themed dropdown, location pin icons in suggestions, error states
+8. **New API Routes** — `/api/v1/weather/forecast` (5-day forecast), `/api/v1/weather/location` (lat/lon-based weather lookup)
+9. **New React Hooks** — `useUnitPreference`, `useGeolocation`, enhanced `useWeather` with forecast fetching and refresh capability
+
+### Known Deferred at Close
+
+- Air Quality Index (AQI) display — requires weatherapi.com AQI integration
+- Hourly forecast breakdown within 5-day panel
+- M1-M8 manual browser tests (require live WEATHER_API_KEY + Railway deployment)
+- Production deployment with real WEATHER_API_KEY
+
+---
+
 ## v1.1 — Local City Database + Instant Search
 
 **Shipped:** 2026-05-13

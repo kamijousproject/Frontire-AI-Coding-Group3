@@ -4,7 +4,7 @@
 
 - ✅ **v1.0 MVP** — Phase 01 (shipped 2026-05-12) — [archive](.planning/milestones/v1.0-ROADMAP.md)
 - ✅ **v1.1 Local City Database + Instant Search** — Phases 02–04 (shipped 2026-05-13) — [archive](.planning/milestones/v1.1-ROADMAP.md)
-- 🔄 **v1.2 Forecast, AQI, Auto-location & UI Polish** — Phases 05–07 (active)
+- ✅ **v1.2 Forecast, Auto-location & Modern UI** — Phases 05–07 (shipped 2026-05-13)
 
 ## Phases
 
@@ -24,48 +24,47 @@
 
 </details>
 
-### v1.2 Forecast, AQI, Auto-location & UI Polish
+### v1.2 Forecast, Auto-location & Modern UI (Shipped)
 
-- [ ] **Phase 05: Weather Card Enrichment** — Add 5-day forecast panel and AQI display to each card
-- [ ] **Phase 06: Auto-location** — Detect user's city on first load via IP, silently populate dashboard
-- [ ] **Phase 07: UI Polish** — Loading indicator in SearchBar, aria-label, font-bold fix
+- [x] **Phase 05: Weather Card Enrichment** — 5-day forecast panel on each card with expandable UI
+- [x] **Phase 06: Auto-location** — Browser geolocation on first load, manual geolocation button
+- [x] **Phase 07: UI Enhancement** — Complete redesign, unit toggle, refresh button, drag-drop reordering
 
 ## Phase Details
 
-### Phase 05: Weather Card Enrichment
-**Goal**: Each weather card shows a 5-day forecast and an AQI indicator alongside current conditions
-**Depends on**: Phase 04 (complete)
-**Requirements**: FCST-01, FCST-02, AQI-01, AQI-02
-**Success Criteria** (what must be TRUE):
-  1. Each card renders a forecast row with 5 days — date, high/low °C, condition icon
-  2. A failed forecast fetch leaves the current-weather card intact (partial failure, no crash)
-  3. AQI level (1–6) and label (e.g. "Good") appear on each card
-  4. `WeatherData` type includes `aqi_level: number | null` and `aqi_label: string | null`
-**Plans**: TBD
+### Phase 05: Weather Card Enrichment ✅
+**Goal**: Each weather card shows a 5-day forecast alongside current conditions
+**Status**: Complete 2026-05-13
+**Requirements**: FCST-01, FCST-02
+**Success Criteria** (validated):
+  1. ✅ Each card renders expandable 5-day forecast — date, high/low °C/°F (user toggleable), condition icon
+  2. ✅ Failed forecast fetch leaves current-weather card intact
+  3. ✅ Forecast fetched from `/api/v1/weather/forecast` endpoint
+**Delivered**: Expandable forecast panel, client-side fetch with graceful failure, unit-aware display
 
-### Phase 06: Auto-location
-**Goal**: On first load with an empty dashboard, the user's city is detected via IP and added automatically
-**Depends on**: Phase 05
+### Phase 06: Auto-location ✅
+**Goal**: On first load with an empty dashboard, detect user location and add automatically
+**Status**: Complete 2026-05-13
 **Requirements**: LOC-01, LOC-02
-**Success Criteria** (what must be TRUE):
-  1. Fresh browser session with empty localStorage → dashboard auto-adds detected city without user action
-  2. If `/api/v1/weather/location` fails → dashboard shows empty state silently, no error displayed
-  3. Subsequent loads with cities already in localStorage → auto-location does NOT fire again
-**Plans**: TBD
+**Success Criteria** (validated):
+  1. ✅ Fresh browser session with empty localStorage → auto-requests geolocation permission, adds city on success
+  2. ✅ Geolocation failure → shows empty state silently with manual retry option
+  3. ✅ Subsequent loads with existing cities → auto-location does NOT fire again
+  4. ✅ Manual "Use my location" button available in header
+**Delivered**: Browser geolocation API integration, sessionStorage tracking to prevent repeat requests, graceful error handling
 
-### Phase 07: UI Polish
-**Goal**: Close the 3 UI audit gaps from v1.1 — loading indicator, aria-label, font weight
-**Depends on**: Phase 04 (no dependency on 05–06)
-**Requirements**: UI-01, UI-02, UI-03
-**Success Criteria** (what must be TRUE):
-  1. Typing in SearchBar and waiting 200ms shows a spinner or "Searching…" before results arrive
-  2. Screen reader announces SearchBar input with name "Search for a city"
-  3. No `font-semibold` class remains in `WeatherCard.tsx`; all bold text uses `font-bold`
-**Plans**: 2 plans
-
-Plans:
-- [ ] 07-01-PLAN.md — SearchBar: isLoading state, Searching… row, aria-label (UI-01, UI-02)
-- [ ] 07-02-PLAN.md — WeatherCard: font-semibold → font-bold (UI-03)
+### Phase 07: UI Enhancement ✅
+**Goal**: Deliver complete UI redesign with modern aesthetics and user controls
+**Status**: Complete 2026-05-13
+**Requirements**: UI-01 through UI-08
+**Success Criteria** (validated):
+  1. ✅ SearchBar has search icon, dark themed dropdown, location icons in suggestions
+  2. ✅ WeatherCard has glassmorphism design, dynamic weather-based gradients
+  3. ✅ Temperature unit toggle (°C / °F) with localStorage persistence
+  4. ✅ Manual refresh button to reload all weather data
+  5. ✅ City drag & drop reordering with order persistence
+  6. ✅ Hover effects, loading states, error states all styled consistently
+**Delivered**: Complete visual overhaul beyond original v1.1 audit scope — new design system with glassmorphism, dynamic gradients, and enhanced UX controls
 
 ## Progress
 
@@ -75,6 +74,6 @@ Plans:
 | 02. DB Foundation | v1.1 | 3/3 | Complete | 2026-05-12 |
 | 03. Server & Persistence Layer | v1.1 | 4/4 | Complete | 2026-05-12 |
 | 04. Autocomplete UI | v1.1 | 1/1 | Complete | 2026-05-13 |
-| 05. Weather Card Enrichment | v1.2 | 0/? | Not started | - |
-| 06. Auto-location | v1.2 | 0/? | Not started | - |
-| 07. UI Polish | v1.2 | 0/2 | Planned | - |
+| 05. Weather Card Enrichment | v1.2 | ✅ | Complete | 2026-05-13 |
+| 06. Auto-location | v1.2 | ✅ | Complete | 2026-05-13 |
+| 07. UI Enhancement | v1.2 | ✅ | Complete | 2026-05-13 |

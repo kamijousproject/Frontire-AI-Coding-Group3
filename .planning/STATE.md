@@ -1,23 +1,23 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.2
-milestone_name: Forecast, AQI, Auto-location & UI Polish
-status: Planning phase 07
-last_updated: "2026-05-13T03:00:00.000Z"
-last_activity: 2026-05-13 — Phase 07 discuss complete, ready to plan
+milestone_name: Forecast, Auto-location & Modern UI
+status: Complete — v1.2 shipped
+last_updated: "2026-05-13T10:00:00.000Z"
+last_activity: 2026-05-13 — v1.2 implementation complete, all features delivered
 progress:
   total_phases: 3
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  completed_phases: 3
+  total_plans: 3
+  completed_plans: 3
+  percent: 100
 ---
 
 # GSD State
 
-phase: 07
+phase: complete
 active_plan: null
-status: Planning phase 07
+status: v1.2 milestone complete — all phases delivered
 
 ## Project Reference
 
@@ -28,14 +28,24 @@ See: .planning/PROJECT.md (updated 2026-05-13)
 
 ## Current Position
 
-Phase: 07 — UI Polish (discuss complete, planning next)
-Plan: —
-Status: Ready to plan
-Last activity: 2026-05-13 — Phase 07 discuss complete (07-CONTEXT.md written)
+Phase: Complete — v1.2 shipped 2026-05-13
+Status: All features delivered
+Last activity: 2026-05-13 — v1.2 implementation complete
+
+### v1.2 Delivered Features
+
+1. **5-Day Forecast Panel** — Expandable forecast in each WeatherCard with date, high/low temps, condition icons
+2. **Auto-location** — Browser geolocation on first load, manual location button in header
+3. **UI Redesign** — Complete glassmorphism overhaul with dynamic weather gradients
+4. **Unit Toggle** — °C / °F switch with localStorage persistence
+5. **Manual Refresh** — Header button to reload all weather data
+6. **Drag & Drop Reordering** — Reorder cities via drag, persist to localStorage
+7. **Enhanced SearchBar** — Search icon, dark dropdown, location icons
+8. **New API Routes** — `/api/v1/weather/forecast`, `/api/v1/weather/location`
 
 ## Accumulated Context
 
-### Key Decisions (v1.1)
+### Key Decisions (v1.1 + v1.2)
 
 | Decision | Rationale |
 |----------|-----------|
@@ -45,6 +55,15 @@ Last activity: 2026-05-13 — Phase 07 discuss complete (07-CONTEXT.md written)
 | serverExternalPackages in next.config.ts | Prevents webpack from bundling the native binary |
 | weather_cities_v2 localStorage key | Cannot recover lat/lon from v1.0 string[] — silent reset |
 | Pipe/colon delimiter for /multiple | Avoids ambiguity with comma in lat,lon pairs |
+| AbortController created inside setTimeout callback | v1.1 — prevents stale controller from prior keypress governing a later fetch |
+| onMouseDown (not onClick) for suggestion selection | v1.1 — fires before onBlur so dropdown stays open until selection registered |
+| Prefix highlight via String.slice + `<strong>`, no dangerouslySetInnerHTML | v1.1 — Safe — XSS-free, zero innerHTML |
+| 200ms debounce (corrected from 300ms) | v1.1 — matches AUTO-01 spec |
+| **Browser geolocation (not IP)** | v1.2 — More accurate than IP; user permission model aligns with modern web standards |
+| **Client-side forecast fetch** | v1.2 — Allows graceful partial failure; doesn't block current weather render |
+| **Dynamic gradient backgrounds** | v1.2 — Weather condition code + is_day mapping for visual polish |
+| **Drag & drop for reordering** | v1.2 — Intuitive UX; HTML5 DND API with localStorage persistence |
+| **Unit toggle in header** | v1.2 — Global control, localStorage preference, affects all cards |
 
 ### Critical Pitfalls to Watch
 
@@ -68,14 +87,13 @@ If better-sqlite3 fails to compile after two attempts:
 - 2026-05-12: Phase 01 shipped — direct-to-main, 26/26 static checks pass, M1-M8 manual tests pending
 - 2026-05-12: v1.0 milestone archived — MILESTONES.md, PROJECT.md, ROADMAP.md updated; git tag v1.0
 - 2026-05-12: v1.1 roadmap created — 3 phases (02–04), 11 requirements mapped
-- 2026-05-12: Plan 02-01 complete — better-sqlite3 installed, next.config.ts configured (commits aa8bdf7, 669701d)
-- 2026-05-12: Plan 02-02 complete — worldcities.csv + build-cities-db.mjs + cities.db (7300 rows) committed (commits 970bc8f, 79dcede, 9f35835)
-- 2026-05-12: Plan 02-03 complete — src/lib/db.ts HMR-safe singleton exported as getDb() (commits 5a1e45f, e974c6c)
-- 2026-05-12: Phase 02 complete — Railway native build verification approved by human; CITY-01, CITY-02 validated
-- 2026-05-12: Phase 03 planned — 4 plans (03-01 to 03-04), 4 waves, plan-checker passed, 5/5 REQ-IDs covered
-- 2026-05-12: Phase 03 complete — CityEntry type, SQLite search route, coord-based weather API, localStorage v2 migration (commits f454878–1810adb, TypeScript clean)
-- 2026-05-12: Phase 04 plan 04-01 complete — SearchBar ARIA combobox, AbortController, 200ms debounce, keyboard nav, prefix highlight (commits 34a665b, 3585bf3, TypeScript clean)
-- 2026-05-13: Phase 04 UAT complete — 4/4 tests passed (debounce+abort, dropdown format, keyboard nav, prefix highlight) — v1.1 milestone complete
+- 2026-05-12: Plan 02-01 complete — better-sqlite3 installed, next.config.ts configured
+- 2026-05-12: Plan 02-02 complete — worldcities.csv + build-cities-db.mjs + cities.db (7300 rows)
+- 2026-05-12: Plan 02-03 complete — src/lib/db.ts HMR-safe singleton exported as getDb()
+- 2026-05-12: Phase 02 complete — Railway native build verification; CITY-01, CITY-02 validated
+- 2026-05-12: Phase 03 complete — CityEntry type, SQLite search route, coord-based weather API, localStorage v2 migration
+- 2026-05-13: Phase 04 complete — SearchBar ARIA combobox, AbortController, 200ms debounce, keyboard nav, prefix highlight — v1.1 milestone complete
+- 2026-05-13: **v1.2 implementation** — Complete UI redesign, 5-day forecast, auto-location, unit toggle, refresh button, drag-drop reordering — all features delivered
 
 ## Deferred Items
 

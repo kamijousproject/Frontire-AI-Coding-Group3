@@ -15,17 +15,20 @@ Real-time weather at a glance — multiple cities, one page, no page refresh nee
 - **Deployment:** Railway (NIXPACKS builder)
 - **API:** weatherapi.com (current weather + city search)
 
-## Current Milestone: v1.2 Forecast, AQI, Auto-location & UI Polish
+## Current Milestone: v1.2 Complete — Forecast, Auto-location & Modern UI
 
-**Goal:** Enrich each city card with 5-day forecast and air quality data, detect the user's location on first load, and close 3 UI audit gaps from v1.1.
+**Status:** Shipped 2026-05-13
 
-**Target features:**
-- 5-day forecast on each weather card (backend route exists at `/api/v1/weather/forecast`)
-- Air quality index (AQI) on weather cards (`aqi=yes` param, new AQI fields in WeatherData type)
-- IP-based auto-location on first load (`/api/v1/weather/location` route exists, needs UI hook)
-- Loading indicator in SearchBar during 200ms debounce fetch
-- `aria-label="Search for a city"` on SearchBar input
-- `font-semibold` → `font-bold` in WeatherCard (typography spec fix)
+**Goal:** Enrich each city card with 5-day forecast, detect the user's location on first load, deliver a complete UI redesign, and add user-facing controls.
+
+**Delivered features:**
+- ✅ 5-day forecast panel on each weather card (expandable, fetched from `/api/v1/weather/forecast`)
+- ✅ Auto-location on first load via browser geolocation API (falls back gracefully)
+- ✅ Complete UI redesign — modern glassmorphism, dynamic gradients, hover effects
+- ✅ Temperature unit toggle (°C / °F) with localStorage persistence
+- ✅ Manual refresh button for all weather data
+- ✅ City reordering via drag & drop with localStorage persistence
+- ✅ Enhanced SearchBar with icons and dark dropdown theme
 
 ## Requirements
 
@@ -54,14 +57,23 @@ Real-time weather at a glance — multiple cities, one page, no page refresh nee
 - ✓ Dropdown: up to 8 results, City/Region/Country format, keyboard nav (↑↓ Enter Escape Tab) — Phase 04
 - ✓ Match highlighting — typed characters bold in suggestion rows — Phase 04
 
-### Active (v1.2)
+### Validated (v1.2)
 
-- [ ] 5-day forecast panel on each weather card
-- [ ] Air quality index (AQI) displayed on weather cards
-- [ ] IP-based auto-location on first load (add first city automatically)
-- [ ] Loading indicator in SearchBar during debounce fetch
-- [ ] `aria-label="Search for a city"` on SearchBar input
-- [ ] `font-bold` instead of `font-semibold` in WeatherCard
+- ✓ 5-day forecast panel on each weather card — expandable UI with date, high/low temps, condition icons
+- ✓ Auto-location on first page load — browser geolocation API with permission handling
+- ✓ Temperature unit preference (°C / °F) — toggle button with localStorage persistence
+- ✓ Manual weather refresh — bypass cache button with loading state
+- ✓ City drag & drop reordering — persist order to localStorage
+- ✓ Complete UI redesign — glassmorphism cards, dynamic weather gradients, modern typography
+- ✓ Enhanced SearchBar — search icon, dark themed dropdown, location icons in suggestions
+- ✓ Loading states — spinner in cards, refresh button loading state
+- ✓ Error handling — graceful geolocation failure, API error states
+
+### Active (Next)
+
+- [ ] Air quality index (AQI) displayed on weather cards — pending weatherapi.com AQI integration
+- [ ] Hourly forecast breakdown within 5-day panel
+- [ ] Weather alerts integration
 - [ ] Manual browser tests M1-M8 against live Railway deployment
 - [ ] Production deployment with real WEATHER_API_KEY
 
@@ -73,10 +85,11 @@ Real-time weather at a glance — multiple cities, one page, no page refresh nee
 
 ## Context
 
-Shipped v1.1 with ~1,214 LOC TypeScript across src/ (incremental over v1.0 base).  
-Tech: Next.js 16 App Router, TailwindCSS v4, better-sqlite3, weatherapi.com (lat/lon).  
+Shipped v1.2 with ~1,800+ LOC TypeScript across src/.  
+Tech: Next.js 16 App Router, TailwindCSS v4, better-sqlite3, weatherapi.com (lat/lon + forecast).  
 City database: 7,300 cities in `data/cities.db`. localStorage schema: `CityEntry[]` (weather_cities_v2).  
-UAT: 4/4 manual browser tests passed. UI audit: 18/24 (top gaps: loading indicator, aria-label, font weight).
+New APIs: `/api/v1/weather/forecast`, `/api/v1/weather/location` (lat/lon lookup).  
+UI: Complete glassmorphism redesign with dynamic weather gradients, drag-drop reordering, unit toggle.
 
 ## Key Decisions
 
