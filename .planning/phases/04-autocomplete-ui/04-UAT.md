@@ -1,19 +1,14 @@
 ---
-status: testing
+status: complete
 phase: 04-autocomplete-ui
 source: [04-01-SUMMARY.md]
 started: 2026-05-12T16:30:00.000Z
-updated: 2026-05-12T16:30:00.000Z
+updated: 2026-05-13T00:00:00.000Z
 ---
 
 ## Current Test
 
-number: 2
-name: Dropdown Format and Empty State
-expected: |
-  Type "bang" — wait for dropdown. Up to 8 rows, each "City, Region, Country".
-  Type "xqzwv" — dropdown shows: No cities found for 'xqzwv'
-awaiting: user response
+[testing complete]
 
 ## Tests
 
@@ -29,7 +24,7 @@ expected: |
   Type "bang" into the SearchBar and wait for results.
   Dropdown shows up to 8 suggestions. Each row formatted as "City, Region, Country" (region omitted if null).
   Now type "xqzwv" (nonsense string) — dropdown shows: No cities found for 'xqzwv' (exact text, with the query interpolated).
-result: [pending]
+result: pass
 
 ### 3. Keyboard Navigation
 expected: |
@@ -41,7 +36,7 @@ expected: |
   Type "lon" again for a fresh dropdown.
   Press Escape — dropdown closes, input is not cleared.
   Type "lon" again, press Tab — dropdown closes, focus moves to next element, city is NOT added.
-result: [pending]
+result: pass
 
 ### 4. Prefix Highlighting
 expected: |
@@ -49,14 +44,14 @@ expected: |
   In the dropdown suggestions, the "Lon" prefix of each city name appears in bold (darker/heavier weight).
   The remainder of the city name, region, and country are in normal weight.
   (e.g. suggestion shows: **Lon**don, England, United Kingdom)
-result: [pending]
+result: pass
 
 ## Summary
 
 total: 4
-passed: 1
+passed: 4
 issues: 0
-pending: 3
+pending: 0
 skipped: 0
 
 ## Gaps
