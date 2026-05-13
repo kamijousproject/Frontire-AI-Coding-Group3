@@ -223,27 +223,36 @@ Partial success: all cities attempted; failed cities return `WeatherError` (with
 | 200 | `CitySearchResult[]` max 5 results; empty array `[]` if no match |
 | 400 | `ErrorResponse` code 1004 |
 
-### `GET /api/v1/weather/forecast?city={name}` *(nice-to-have)*
+### `GET /api/v1/weather/forecast?q={lat,lon}`
+
+Fetch 5-day forecast for coordinates. Returns days 1–5 from today (UTC).
 
 | Param | Type | Required | Constraints |
 |---|---|---|---|
-| `city` | string | yes | 2–100 chars |
+| `q` | string | yes | Format: `lat,lon` e.g. `13.75,100.517` |
 
 | Status | Body |
 |---|---|
-| 200 | `ForecastDay[]` — exactly 5 items (days 1–5 from today, UTC) |
-| 400 | `ErrorResponse` code 1004 |
-| 404 | `ErrorResponse` code 1001 |
+| 200 | `ForecastDay[]` — exactly 5 items |
+| 400 | `ErrorResponse` code 1004 (invalid coordinates) |
+| 404 | `ErrorResponse` code 1001 (location not found) |
 
-### `GET /api/v1/weather/location?lat={lat}&lon={lon}` *(nice-to-have)*
+### `GET /api/v1/weather/location?lat={lat}&lon={lon}`
+
+Resolve coordinates to weather data, or auto-detect via IP if no params provided.
 
 | Param | Type | Required | Constraints |
 |---|---|---|---|
-| `lat` | float | yes | -90.0 to 90.0 |
-| `lon` | float | yes | -180.0 to 180.0 |
+| `lat` | float | no | -90.0 to 90.0 |
+| `lon` | float | no | -180.0 to 180.0 |
 
-Response `200`: `WeatherData` — `city` field populated from weatherapi.com `location.name` of resolved coordinates.  
-Response `400`: `ErrorResponse` code 1004 if out of range.
+If `lat`/`lon` omitted, uses `auto:ip` lookup via weatherapi.com.
+
+| Status | Body |
+|---|---|
+| 200 | `WeatherData` — `city` field from resolved location |
+| 400 | `ErrorResponse` code 1004 (invalid coordinates) |
+| 503 | `ErrorResponse` code 1003 (geolocation failed) |
 
 ---
 
@@ -271,8 +280,8 @@ Non-negotiable implementation requirements:
 | 5 | Responsive design (1/2/3-col grid) | Must-have | §1 Frontend Style / TailwindCSS |
 | 6 | Empty + error states + retry (one attempt) | Must-have | §1 Must-have / §4 `ErrorResponse` |
 | 7 | City persistence (`localStorage` as `string[]`, parse recovery, 10-cap) | Must-have | §1 Must-have |
-| 8 | 5-day forecast (expandable card section, day variant) | Nice-to-have | §5 `GET /api/v1/weather/forecast` |
-| 9 | Geolocation (graceful fallback, dedup vs existing cities) | Nice-to-have | §5 `GET /api/v1/weather/location` |
+| 8 | 5-day forecast (expandable card section, day variant) | Nice-to-have | §5 `GET /api/v1/weather/forecast` + weatherapi.com `/forecast.json` |
+| 9 | Geolocation (graceful fallback, dedup vs existing cities) | Nice-to-have | §5 `GET /api/v1/weather/location` + weatherapi.com `/ip.json` |
 | 10 | weatherapi.com integration (10m cache, no mid-session refresh) | Challenge | §3 / §5 cache spec |
 | 11 | JSON data processing (schema transform + icon normalization) | Challenge | §4 `WeatherData` / `ForecastDay` |
 
@@ -290,6 +299,8 @@ Must include requirements 1–7, 10, 11.
 | GET | `/api/v1/weather/current` | Current weather by city (10m cache) |
 | GET | `/api/v1/weather/multiple` | Weather for 1–10 cities (deduped) |
 | GET | `/api/v1/cities/search` | Search cities, max 5 results |
+| GET | `/api/v1/weather/forecast` | 5-day forecast by coordinates *(nice-to-have)* |
+| GET | `/api/v1/weather/location` | Weather by geolocation *(nice-to-have)* |
 
 ### Deployment (Railway)
 

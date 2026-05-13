@@ -37,7 +37,9 @@
       "Bash(cp /tmp/roadmap_backup.md .planning/ROADMAP.md)",
       "Bash(node *)",
       "Bash(python3 -c \"import json; c=json.load\\(open\\('.planning/config.json'\\)\\); print\\(c.get\\('workflow',{}\\).get\\('code_review','true'\\)\\)\")",
-      "Skill(gsd-code-review)"
+      "Skill(gsd-code-review)",
+      "Skill(gsd-verify-work)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }

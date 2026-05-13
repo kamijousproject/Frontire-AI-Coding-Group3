@@ -59,5 +59,18 @@ export function useCityStorage() {
     })
   }
 
-  return { cities, addCity, removeCity }
+  function reorderCities(newOrder: CityEntry[]): void {
+    setCities((prev) => {
+      // Validate that all cities are preserved
+      const prevIds = new Set(prev.map((c) => c.id))
+      const newIds = new Set(newOrder.map((c) => c.id))
+      if (prevIds.size !== newIds.size || ![...prevIds].every((id) => newIds.has(id))) {
+        return prev // Invalid reorder, ignore
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newOrder))
+      return newOrder
+    })
+  }
+
+  return { cities, addCity, removeCity, reorderCities }
 }

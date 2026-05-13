@@ -24,11 +24,12 @@ export async function GET(request: Request) {
     pairs.map(async ({ lat, lon }): Promise<MultiWeatherResult> => {
       const cacheKey = `${lat.toFixed(4)},${lon.toFixed(4)}`
       const cached = cache.get(cacheKey)
-      if (cached) return cached
+      if (cached) return { ...cached, city: cacheKey }
       try {
         const data = await fetchCurrentWeather(cacheKey)
         cache.set(cacheKey, data)
-        return data
+        // Use coordinate key so frontend can match results
+        return { ...data, city: cacheKey }
       } catch (err: unknown) {
         const e = err as { code?: number; message?: string }
         return { type: 'error', city: cacheKey, error: e.message ?? 'Failed', code: e.code ?? 1003 }

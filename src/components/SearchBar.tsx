@@ -147,35 +147,55 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
 
   return (
     <div ref={containerRef} className="relative w-full max-w-md">
-      <input
-        type="text"
-        role="combobox"
-        aria-expanded={showDropdown}
-        aria-controls={listboxId}
-        aria-autocomplete="list"
-        aria-activedescendant={highlightedIndex >= 0 ? getOptionId(highlightedIndex) : undefined}
-        value={query}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        placeholder="Search for a city..."
-        className="w-full rounded-lg border border-white/30 bg-white/20 px-4 py-2 text-white placeholder-white/60 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white/50"
-      />
+      <div className="relative">
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50">
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <input
+          type="text"
+          role="combobox"
+          aria-expanded={showDropdown}
+          aria-controls={listboxId}
+          aria-autocomplete="list"
+          aria-activedescendant={highlightedIndex >= 0 ? getOptionId(highlightedIndex) : undefined}
+          value={query}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder={isFull ? 'Maximum 10 cities reached' : 'Search for a city...'}
+          disabled={isFull}
+          className={`w-full rounded-xl border border-white/20 bg-white/10 pl-10 pr-4 py-2.5 text-sm text-white placeholder-white/50 backdrop-blur-xl transition-all focus:outline-none focus:ring-2 focus:ring-sky-400/50 focus:border-sky-400/30 ${isFull ? 'cursor-not-allowed opacity-50' : 'hover:bg-white/15'}`}
+        />
+        {isFull && (
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-400">
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+        )}
+      </div>
 
       {duplicateError && (
-        <p className="mt-1 text-sm text-red-300">City already added</p>
+        <div className="absolute -bottom-8 left-0 right-0 flex items-center gap-1 text-sm text-amber-300">
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>City already added</span>
+        </div>
       )}
 
       {showDropdown && (
         <ul
           role="listbox"
           id={listboxId}
-          className="absolute z-10 mt-1 w-full rounded-lg border border-white/20 bg-white/90 shadow-lg backdrop-blur-sm"
+          className="absolute z-50 mt-2 w-full overflow-hidden rounded-xl border border-white/20 bg-slate-800/95 shadow-2xl shadow-black/50 backdrop-blur-xl"
         >
           {results.length === 0 ? (
             <li
               role="option"
               aria-disabled="true"
-              className="px-4 py-2 text-sm text-gray-500"
+              className="px-4 py-3 text-sm text-white/50"
             >
               No cities found for &apos;{query}&apos;
             </li>
@@ -188,11 +208,19 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
                 aria-selected={i === highlightedIndex}
                 tabIndex={-1}
                 onMouseDown={(e) => { e.preventDefault(); if (!isFull) handleSelect(r) }}
-                className={`px-4 py-2 text-sm text-gray-800 cursor-pointer ${
-                  i === highlightedIndex ? 'bg-blue-100' : 'hover:bg-blue-50'
+                className={`border-b border-white/5 px-4 py-3 text-sm cursor-pointer transition-colors last:border-0 ${
+                  i === highlightedIndex 
+                    ? 'bg-sky-500/20 text-white' 
+                    : 'text-white/80 hover:bg-white/10'
                 }${isFull ? ' opacity-50 cursor-not-allowed' : ''}`}
               >
-                {formatSuggestion(r, query)}
+                <div className="flex items-center gap-2">
+                  <svg className="h-4 w-4 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  {formatSuggestion(r, query)}
+                </div>
               </li>
             ))
           )}
