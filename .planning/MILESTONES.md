@@ -1,5 +1,34 @@
 # MILESTONES
 
+## v1.1 — Local City Database + Instant Search
+
+**Shipped:** 2026-05-13
+**Phases:** 02–04 | **Plans:** 8 | **Tasks:** ~20
+**Git range:** 3bb21f4 → 0272c83
+**Archive:** `.planning/milestones/v1.1-ROADMAP.md`
+
+### Delivered
+
+Replaced live weatherapi.com city search with a bundled SQLite database of 7,300 world cities. Added a full ARIA combobox autocomplete SearchBar with 200ms debounce, AbortController race cancellation, keyboard navigation, and bold prefix highlighting. Weather lookups now use lat/lon coordinates for precision. localStorage schema migrated to `CityEntry[]` with silent v1 reset.
+
+### Key Accomplishments
+
+1. SQLite city database (7,300 cities) bundled in repo — `data/cities.db` queryable on Railway with zero network cost
+2. better-sqlite3 HMR-safe singleton (`getDb()`) — no multi-handle race on hot reload
+3. `/api/cities/search` server-side prefix search with population-ranked results (LIMIT 8)
+4. Coordinate-based weather API — `?q=lat,lon` and `?cities=lat:lon|lat:lon` pipe/colon format
+5. localStorage v2 migration — `CityEntry[]` with `weather_cities_v2` key; v1 string-array silently discarded
+6. Full ARIA combobox SearchBar — ↑↓ Enter Escape Tab keyboard nav, bold prefix via `<strong>`, UAT 4/4 passed
+
+### Known Deferred at Close
+
+- M1-M8 manual browser tests (require live WEATHER_API_KEY + Railway deployment)
+- Loading indicator during 200ms debounce fetch window (UX gap, UI audit finding)
+- `aria-label` on SearchBar input (accessibility gap, UI audit finding)
+- Production deployment with real WEATHER_API_KEY
+
+---
+
 ## v1.0 MVP — Weather Dashboard MVP
 
 **Shipped:** 2026-05-12  

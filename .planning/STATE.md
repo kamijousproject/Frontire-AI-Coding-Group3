@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Local City Database + Instant Search
-status: complete
+status: milestone_complete
 last_updated: "2026-05-13T00:00:00.000Z"
-last_activity: 2026-05-13 -- Phase 04 UAT complete (4/4 passed) — v1.1 milestone complete
+last_activity: 2026-05-13 -- v1.1 milestone archived — ready for /gsd-new-milestone
 progress:
   total_phases: 3
   completed_phases: 3
@@ -17,28 +17,27 @@ progress:
 
 phase: 04
 active_plan: null
-status: v1.1 milestone complete — ready for /gsd-complete-milestone
+status: v1.1 archived — ready for /gsd-new-milestone
 
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-05-13)
 
 **Core value:** Real-time weather at a glance — multiple cities, one page, no page refresh needed.
-**Current focus:** v1.1 complete — run /gsd-complete-milestone to archive and start v1.2
+**Current focus:** v1.1 archived — start v1.2 with /gsd-new-milestone
 
 ## Current Position
 
-Phase: 04 (autocomplete-ui) — COMPLETE ✅
-Plan: 1/1 complete
-Status: UAT 4/4 passed — all phases verified
-Progress: 3/3 phases complete
+Phase: milestone complete
+Active plan: none
+Status: v1.1 archived — all phases complete, ROADMAP and PROJECT.md updated
 
 ```
 [██████████] 100%
-✅ Phase 02 ··· ✅ Phase 03 ··· ✅ Phase 04
+✅ v1.0 ··· ✅ v1.1 (Phases 02–04)
 ```
 
-Last activity: 2026-05-13 -- Phase 04 UAT 4/4 passed — v1.1 milestone complete
+Last activity: 2026-05-13 -- v1.1 milestone archived to .planning/milestones/v1.1-ROADMAP.md
 
 ## Accumulated Context
 

@@ -15,16 +15,14 @@ Real-time weather at a glance — multiple cities, one page, no page refresh nee
 - **Deployment:** Railway (NIXPACKS builder)
 - **API:** weatherapi.com (current weather + city search)
 
-## Current Milestone: v1.1 Local City Database + Instant Search
+## Current State: v1.1 Shipped — Planning v1.2
 
-**Goal:** Replace live weatherapi.com city search with a bundled SQLite database of ~5,000 major world cities, enabling instant type-ahead autocomplete and more precise weather lookups via lat/lon.
+**Shipped v1.1 (2026-05-13):** SQLite city database, instant type-ahead autocomplete, lat/lon weather API, localStorage v2 migration. All 11 v1.1 requirements delivered, 4/4 UAT tests passed.
 
-**Target features:**
-- `cities.db` bundled in repo (city, country, region, lat, lon, timezone, population)
-- Server-side `/api/cities/search` endpoint querying SQLite
-- SearchBar upgraded to instant type-ahead (local results, no API call per keystroke)
-- Weather fetched by lat/lon coordinates instead of city name string
-- Same add-to-dashboard flow preserved
+**Known gaps carried forward:**
+- M1-M8 manual browser tests (require live WEATHER_API_KEY + Railway deployment)
+- Loading indicator during debounce fetch window (UX gap from UI audit)
+- `aria-label` on SearchBar input (accessibility gap from UI audit)
 
 ## Requirements
 
@@ -53,8 +51,11 @@ Real-time weather at a glance — multiple cities, one page, no page refresh nee
 - ✓ Dropdown: up to 8 results, City/Region/Country format, keyboard nav (↑↓ Enter Escape Tab) — Phase 04
 - ✓ Match highlighting — typed characters bold in suggestion rows — Phase 04
 
-### Active (v1.1 — deferred)
+### Active (v1.2 — next milestone)
 
+- [ ] Loading indicator during debounce fetch (UX — UI audit gap)
+- [ ] `aria-label="Search for a city"` on SearchBar input (accessibility)
+- [ ] `font-bold` instead of `font-semibold` in WeatherCard (typography spec)
 - [ ] Manual browser tests M1-M8 against live Railway deployment
 - [ ] Production deployment with real WEATHER_API_KEY
 
@@ -66,9 +67,10 @@ Real-time weather at a glance — multiple cities, one page, no page refresh nee
 
 ## Context
 
-Shipped v1.0 with ~3,661 LOC across 36 files (TypeScript, TSX, CSS, JSON).  
-Tech: Next.js 16 App Router, TailwindCSS v4 CSS-first config, weatherapi.com.  
-Static audit: 26/26 must_have truths pass. Manual M1-M8 tests pending live deployment.
+Shipped v1.1 with ~1,214 LOC TypeScript across src/ (incremental over v1.0 base).  
+Tech: Next.js 16 App Router, TailwindCSS v4, better-sqlite3, weatherapi.com (lat/lon).  
+City database: 7,300 cities in `data/cities.db`. localStorage schema: `CityEntry[]` (weather_cities_v2).  
+UAT: 4/4 manual browser tests passed. UI audit: 18/24 (top gaps: loading indicator, aria-label, font weight).
 
 ## Key Decisions
 
@@ -109,4 +111,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-13 — v1.1 milestone complete (Phase 04)*
+*Last updated: 2026-05-13 — v1.1 milestone archived, planning v1.2*
