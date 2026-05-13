@@ -1,0 +1,15 @@
+# Railway NIXPACKS configuration for better-sqlite3 build
+# Solves: Node.js version + Python for node-gyp + native build tools
+
+[phases.setup]
+# Use Node.js 20 (LTS) instead of default 18
+nixPkgs = ["nodejs_20", "python3", "gcc", "gnumake"]
+
+# Environment for node-gyp
+[phases.setup.env]
+PYTHON = "/usr/bin/python3"
+NODE_GYP_FORCE_PYTHON = "/usr/bin/python3"
+
+[phases.build]
+# Build steps - npm ci จะถูก run อัตโนมัติ
+# better-sqlite3 จะ compile ด้วย node-gyp ที่มี Python + GCC แล้ว
