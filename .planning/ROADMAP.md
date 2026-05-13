@@ -61,7 +61,11 @@
   1. Typing in SearchBar and waiting 200ms shows a spinner or "Searching…" before results arrive
   2. Screen reader announces SearchBar input with name "Search for a city"
   3. No `font-semibold` class remains in `WeatherCard.tsx`; all bold text uses `font-bold`
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 07-01-PLAN.md — SearchBar: isLoading state, Searching… row, aria-label (UI-01, UI-02)
+- [ ] 07-02-PLAN.md — WeatherCard: font-semibold → font-bold (UI-03)
 
 ## Progress
 
@@ -73,4 +77,4 @@
 | 04. Autocomplete UI | v1.1 | 1/1 | Complete | 2026-05-13 |
 | 05. Weather Card Enrichment | v1.2 | 0/? | Not started | - |
 | 06. Auto-location | v1.2 | 0/? | Not started | - |
-| 07. UI Polish | v1.2 | 0/? | Not started | - |
+| 07. UI Polish | v1.2 | 0/2 | Planned | - |
