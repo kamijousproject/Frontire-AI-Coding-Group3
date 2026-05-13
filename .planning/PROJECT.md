@@ -15,14 +15,17 @@ Real-time weather at a glance — multiple cities, one page, no page refresh nee
 - **Deployment:** Railway (NIXPACKS builder)
 - **API:** weatherapi.com (current weather + city search)
 
-## Current State: v1.1 Shipped — Planning v1.2
+## Current Milestone: v1.2 Forecast, AQI, Auto-location & UI Polish
 
-**Shipped v1.1 (2026-05-13):** SQLite city database, instant type-ahead autocomplete, lat/lon weather API, localStorage v2 migration. All 11 v1.1 requirements delivered, 4/4 UAT tests passed.
+**Goal:** Enrich each city card with 5-day forecast and air quality data, detect the user's location on first load, and close 3 UI audit gaps from v1.1.
 
-**Known gaps carried forward:**
-- M1-M8 manual browser tests (require live WEATHER_API_KEY + Railway deployment)
-- Loading indicator during debounce fetch window (UX gap from UI audit)
-- `aria-label` on SearchBar input (accessibility gap from UI audit)
+**Target features:**
+- 5-day forecast on each weather card (backend route exists at `/api/v1/weather/forecast`)
+- Air quality index (AQI) on weather cards (`aqi=yes` param, new AQI fields in WeatherData type)
+- IP-based auto-location on first load (`/api/v1/weather/location` route exists, needs UI hook)
+- Loading indicator in SearchBar during 200ms debounce fetch
+- `aria-label="Search for a city"` on SearchBar input
+- `font-semibold` → `font-bold` in WeatherCard (typography spec fix)
 
 ## Requirements
 
@@ -51,11 +54,14 @@ Real-time weather at a glance — multiple cities, one page, no page refresh nee
 - ✓ Dropdown: up to 8 results, City/Region/Country format, keyboard nav (↑↓ Enter Escape Tab) — Phase 04
 - ✓ Match highlighting — typed characters bold in suggestion rows — Phase 04
 
-### Active (v1.2 — next milestone)
+### Active (v1.2)
 
-- [ ] Loading indicator during debounce fetch (UX — UI audit gap)
-- [ ] `aria-label="Search for a city"` on SearchBar input (accessibility)
-- [ ] `font-bold` instead of `font-semibold` in WeatherCard (typography spec)
+- [ ] 5-day forecast panel on each weather card
+- [ ] Air quality index (AQI) displayed on weather cards
+- [ ] IP-based auto-location on first load (add first city automatically)
+- [ ] Loading indicator in SearchBar during debounce fetch
+- [ ] `aria-label="Search for a city"` on SearchBar input
+- [ ] `font-bold` instead of `font-semibold` in WeatherCard
 - [ ] Manual browser tests M1-M8 against live Railway deployment
 - [ ] Production deployment with real WEATHER_API_KEY
 
@@ -111,4 +117,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-13 — v1.1 milestone archived, planning v1.2*
+*Last updated: 2026-05-13 — v1.2 milestone started*

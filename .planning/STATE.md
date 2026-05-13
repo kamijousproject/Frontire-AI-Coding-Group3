@@ -1,43 +1,37 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.1
-milestone_name: Local City Database + Instant Search
-status: milestone_complete
+milestone: v1.2
+milestone_name: Forecast, AQI, Auto-location & UI Polish
+status: planning
 last_updated: "2026-05-13T00:00:00.000Z"
-last_activity: 2026-05-13 -- v1.1 milestone archived — ready for /gsd-new-milestone
+last_activity: 2026-05-13 -- v1.2 milestone started — defining requirements
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # GSD State
 
 phase: 04
 active_plan: null
-status: v1.1 archived — ready for /gsd-new-milestone
+status: Defining requirements for v1.2
 
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-05-13)
 
 **Core value:** Real-time weather at a glance — multiple cities, one page, no page refresh needed.
-**Current focus:** v1.1 archived — start v1.2 with /gsd-new-milestone
+**Current focus:** v1.2 — Forecast, AQI, Auto-location & UI Polish
 
 ## Current Position
 
-Phase: milestone complete
-Active plan: none
-Status: v1.1 archived — all phases complete, ROADMAP and PROJECT.md updated
-
-```
-[██████████] 100%
-✅ v1.0 ··· ✅ v1.1 (Phases 02–04)
-```
-
-Last activity: 2026-05-13 -- v1.1 milestone archived to .planning/milestones/v1.1-ROADMAP.md
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-05-13 — Milestone v1.2 started
 
 ## Accumulated Context
 
