@@ -49,12 +49,12 @@ Real-time weather at a glance — multiple cities, one page, no page refresh nee
 - ✓ `/api/cities/search` server-side endpoint with SQLite queries — Phase 03
 - ✓ Weather lookup via lat/lon instead of city name string — Phase 03
 - ✓ localStorage schema migrated to CityEntry[] (weather_cities_v2) — Phase 03
+- ✓ Type-ahead SearchBar with instant local suggestions (2+ chars, 200ms debounce, AbortController) — Phase 04
+- ✓ Dropdown: up to 8 results, City/Region/Country format, keyboard nav (↑↓ Enter Escape Tab) — Phase 04
+- ✓ Match highlighting — typed characters bold in suggestion rows — Phase 04
 
-### Active (v1.1)
+### Active (v1.1 — deferred)
 
-- [ ] Type-ahead SearchBar with instant local suggestions (2+ chars, 200ms debounce, AbortController)
-- [ ] Dropdown: up to 8 results, City/Region/Country format, keyboard nav (↑↓ Enter Escape Tab)
-- [ ] Match highlighting — typed characters bold in suggestion rows
 - [ ] Manual browser tests M1-M8 against live Railway deployment
 - [ ] Production deployment with real WEATHER_API_KEY
 
@@ -80,6 +80,10 @@ Static audit: 26/26 must_have truths pass. Manual M1-M8 tests pending live deplo
 | In-memory rate limit store (resets on restart) | v1.0 | — Acceptable single-instance |
 | CITY_PATTERN hyphen at end of char class | v1.0 | ✓ Good (fixed regex error) |
 | fetchCurrentWeather() directly in /multiple | v1.0 | ✓ Good (avoids double rate-limit) |
+| AbortController created inside setTimeout callback | v1.1 | ✓ Critical — prevents stale controller from prior keypress governing a later fetch |
+| onMouseDown (not onClick) for suggestion selection | v1.1 | ✓ Good — fires before onBlur so dropdown stays open until selection registered |
+| Prefix highlight via String.slice + `<strong>`, no dangerouslySetInnerHTML | v1.1 | ✓ Safe — XSS-free, zero innerHTML |
+| 200ms debounce (corrected from 300ms) | v1.1 | ✓ Good — matches AUTO-01 spec; 300ms was a pre-existing correctness bug |
 
 ## Constraints
 
@@ -105,4 +109,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-12 — v1.1 milestone started*
+*Last updated: 2026-05-13 — v1.1 milestone complete (Phase 04)*

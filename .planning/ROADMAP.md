@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** — Phase 01 (shipped 2026-05-12) — [archive](.planning/milestones/v1.0-ROADMAP.md)
-- 🔄 **v1.1 Local City Database + Instant Search** — Phases 02–04 (active)
+- ✅ **v1.1 Local City Database + Instant Search** — Phases 02–04 (complete 2026-05-13)
 
 ## Phases
 
@@ -21,7 +21,7 @@
 
 - [x] **Phase 02: DB Foundation** — Bundle cities.db and validate Railway native compilation ✅ 2026-05-12
 - [x] **Phase 03: Server & Persistence Layer** — SQLite search route, coord-based weather API, localStorage schema migration ✅ 2026-05-12
-- [ ] **Phase 04: Autocomplete UI** — SearchBar instant type-ahead, keyboard nav, match highlighting
+- [x] **Phase 04: Autocomplete UI** — SearchBar instant type-ahead, keyboard nav, match highlighting ✅ 2026-05-13
 
 ## Phase Details
 
@@ -92,4 +92,4 @@ Plans:
 | 01. Weather Dashboard MVP | v1.0 | 3/3 | Complete | 2026-05-12 |
 | 02. DB Foundation | v1.1 | 3/3 | Complete | 2026-05-12 |
 | 03. Server & Persistence Layer | v1.1 | 4/4 | Complete | 2026-05-12 |
-| 04. Autocomplete UI | v1.1 | 1/1 | Executing | - |
+| 04. Autocomplete UI | v1.1 | 1/1 | Complete | 2026-05-13 |
