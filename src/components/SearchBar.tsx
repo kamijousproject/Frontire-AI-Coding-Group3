@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useRef, useEffect, useId } from 'react'
+import { useState, useRef, useEffect, useId, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import type { CityEntry } from '@/types/weather'
 
 interface SearchBarProps {
@@ -39,6 +40,7 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
   const [showDropdown, setShowDropdown] = useState(false)
   const [duplicateError, setDuplicateError] = useState(false)
   const [highlightedIndex, setHighlightedIndex] = useState(-1)
+  const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({})
 
   const containerRef = useRef<HTMLDivElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -48,6 +50,17 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
   const listboxId = useId()
   const getOptionId = (i: number) => `${listboxId}-opt-${i}`
 
+  const updateDropdownPosition = useCallback(() => {
+    if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    setDropdownStyle({
+      position: 'fixed',
+      top: rect.bottom + 8,
+      left: rect.left,
+      width: rect.width,
+    })
+  }, [])
+
   useEffect(() => {
     function handleMouseDown(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -55,8 +68,14 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
       }
     }
     document.addEventListener('mousedown', handleMouseDown)
-    return () => document.removeEventListener('mousedown', handleMouseDown)
-  }, [])
+    window.addEventListener('resize', updateDropdownPosition)
+    window.addEventListener('scroll', updateDropdownPosition, true)
+    return () => {
+      document.removeEventListener('mousedown', handleMouseDown)
+      window.removeEventListener('resize', updateDropdownPosition)
+      window.removeEventListener('scroll', updateDropdownPosition, true)
+    }
+  }, [updateDropdownPosition])
 
   // Cancel any in-flight fetch on unmount
   useEffect(() => {
@@ -89,6 +108,7 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
         if (res.ok) {
           const data: CityEntry[] = await res.json()
           setResults(data)
+          updateDropdownPosition()
           setShowDropdown(true)
         }
       } catch (err) {
@@ -185,11 +205,12 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
         </div>
       )}
 
-      {showDropdown && (
+      {showDropdown && createPortal(
         <ul
           role="listbox"
           id={listboxId}
-          className="absolute z-50 mt-2 w-full overflow-hidden rounded-xl border border-white/20 bg-slate-800/95 shadow-2xl shadow-black/50 backdrop-blur-xl"
+          style={dropdownStyle}
+          className="z-[9999] overflow-hidden rounded-xl border border-white/20 bg-slate-800/95 shadow-2xl shadow-black/50 backdrop-blur-xl"
         >
           {results.length === 0 ? (
             <li
@@ -200,31 +221,46 @@ export function SearchBar({ cities, onAddCity }: SearchBarProps) {
               No cities found for &apos;{query}&apos;
             </li>
           ) : (
-            results.map((r, i) => (
-              <li
-                key={r.id}
-                role="option"
-                id={getOptionId(i)}
-                aria-selected={i === highlightedIndex}
-                tabIndex={-1}
-                onMouseDown={(e) => { e.preventDefault(); if (!isFull) handleSelect(r) }}
-                className={`border-b border-white/5 px-4 py-3 text-sm cursor-pointer transition-colors last:border-0 ${
-                  i === highlightedIndex 
-                    ? 'bg-sky-500/20 text-white' 
-                    : 'text-white/80 hover:bg-white/10'
-                }${isFull ? ' opacity-50 cursor-not-allowed' : ''}`}
-              >
-                <div className="flex items-center gap-2">
-                  <svg className="h-4 w-4 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  {formatSuggestion(r, query)}
-                </div>
-              </li>
-            ))
+            results.map((r, i) => {
+              const alreadyAdded = cities.some((c) => c.id === r.id)
+              const isDisabled = isFull || alreadyAdded
+              return (
+                <li
+                  key={r.id}
+                  role="option"
+                  id={getOptionId(i)}
+                  aria-selected={i === highlightedIndex}
+                  aria-disabled={isDisabled}
+                  tabIndex={-1}
+                  onMouseDown={(e) => { e.preventDefault(); if (!isDisabled) handleSelect(r) }}
+                  className={`border-b border-white/5 px-4 py-3 text-sm transition-colors last:border-0 ${
+                    isDisabled
+                      ? 'cursor-not-allowed opacity-50'
+                      : i === highlightedIndex
+                        ? 'cursor-pointer bg-sky-500/20 text-white'
+                        : 'cursor-pointer text-white/80 hover:bg-white/10'
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <svg className="h-4 w-4 shrink-0 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      {formatSuggestion(r, query)}
+                    </div>
+                    {alreadyAdded && (
+                      <span className="shrink-0 rounded-full bg-sky-500/20 px-2 py-0.5 text-xs text-sky-300">
+                        Added
+                      </span>
+                    )}
+                  </div>
+                </li>
+              )
+            })
           )}
-        </ul>
+        </ul>,
+        document.body
       )}
     </div>
   )
